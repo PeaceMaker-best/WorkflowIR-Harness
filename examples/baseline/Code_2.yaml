@@ -1,0 +1,378 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Code_2
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.1.13@10cbfe851fdf27f3c50ca2ca86293eb0c27da51ee74e58acebafd92b71c8d518
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: sawyer-shi/tongyi_aigc:0.0.1@01f2e5f8c3226e1bab678eed70baef4503d46aabf96c767ba58eaa48a6a8e290
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.2.0@9f39c2c2c1cd09180e2cc053090adc9886019483f502727467f136712b8b9639
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: hjlarry/mermaid_converter:0.0.1@46e755f0d92566a1f7a6e85086eac02a735afaa41479e7a2277b150abda70b18
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/google:0.1.0@c73cdc3dda5de500974ece93ce38eb6fc6bbf1399d38f1dbbbd70745ce154d0e
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: document-extractor
+      id: 1306233339483-source-1590940676272-target
+      source: '1306233339483'
+      sourceHandle: source
+      target: '1590940676272'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: llm
+      id: 1590940676272-source-1418175935839-target
+      source: '1590940676272'
+      sourceHandle: source
+      target: '1418175935839'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1418175935839-source-1132706257675-target
+      source: '1418175935839'
+      sourceHandle: source
+      target: '1132706257675'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1418175935839-source-1481725931353-target
+      source: '1418175935839'
+      sourceHandle: source
+      target: '1481725931353'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: end
+      id: 1132706257675-source-1114901444153-target
+      source: '1132706257675'
+      sourceHandle: source
+      target: '1114901444153'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: end
+      id: 1481725931353-source-1114901444153-target
+      source: '1481725931353'
+      sourceHandle: source
+      target: '1114901444153'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: source_code
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: file
+          variable: source_code
+        - default: ''
+          hint: ''
+          label: source_language
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: source_language
+        - default: ''
+          hint: ''
+          label: case_input
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: case_input
+      height: 52
+      id: '1306233339483'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_array_file: false
+        selected: false
+        title: Document Extractor
+        type: document-extractor
+        variable_selector:
+        - '1306233339483'
+        - source_code
+      height: 52
+      id: '1590940676272'
+      position:
+        x: 300
+        y: 0
+      positionAbsolute:
+        x: 300
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: 'You are an expert programmer and code translator. Translate source
+            code from its original language into correct, idiomatic Python 3. Requirements:
+
+            1. Carefully analyze the source code and identify ALL dependencies: built-in/standard-library
+            ones and custom/project ones. Preserve every dependency, using the Python
+            equivalent (import statements); do not miss any.
+
+            2. Translate the COMPLETE program into Python, including full implementations
+            of all classes and functions (real logic, not stubs).
+
+            3. The code must be runnable and behaviorally equivalent to the source.
+            Use Python conventions and standard types.
+
+            4. Output ONLY raw Python code. Do not wrap it in markdown fences and
+            do not add explanations.
+
+            5. If the program reads runtime input, read it from standard input (input()/sys.stdin).
+            Do not hard-code any test input.'
+        - role: user
+          text: 'Source language: {{#1306233339483.source_language#}}
+
+            Target language: Python
+
+
+            Original source code:
+
+            {{#1590940676272.text#}}
+
+
+            Translate the above code into complete, runnable Python code. Output only
+            the Python code.'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1418175935839'
+      position:
+        x: 600
+        y: 0
+      positionAbsolute:
+        x: 600
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(python_code: str, case_input: str) -> dict:\n\timport io\n\
+          \timport sys\n\timport contextlib\n\tcheck_msg = \"\"\n\ttry:\n\t\tcompile(python_code,\
+          \ \"<translated>\", \"exec\")\n\t\tcheck_msg = \"Format check: passed (valid\
+          \ Python syntax).\"\n\texts = None\n\texcept SyntaxError as e:\n\t\treturn\
+          \ {\"result\": \"Format check: FAILED - syntax error: \" + str(e)}\n\tnamespace\
+          \ = {\"__name__\": \"__main__\", \"case_input\": case_input}\n\told_argv\
+          \ = sys.argv\n\told_stdin = sys.stdin\n\tstdout_buf = io.StringIO()\n\t\
+          sys.argv = [\"program\", case_input]\n\tsys.stdin = io.StringIO(case_input)\n\
+          \ttry:\n\t\twith contextlib.redirect_stdout(stdout_buf):\n\t\t\texec(compile(python_code,\
+          \ \"<translated>\", \"exec\"), namespace)\n\t\tout = stdout_buf.getvalue()\n\
+          \t\tret = namespace.get(\"result\", None)\n\t\tparts = [check_msg, \"Execution:\
+          \ succeeded.\"]\n\t\tif ret is not None:\n\t\t\tparts.append(\"Return value:\
+          \ \" + str(ret))\n\t\tif out:\n\t\t\tparts.append(\"Program output:\\n\"\
+          \ + out)\n\t\telse:\n\t\t\tparts.append(\"(no standard output)\")\n\t\t\
+          return {\"result\": \"\\n\".join(parts)}\n\texcept Exception as e:\n\t\t\
+          out = stdout_buf.getvalue()\n\t\tparts = [check_msg, \"Execution: FAILED\
+          \ - \" + type(e).__name__ + \": \" + str(e)]\n\t\tif out:\n\t\t\tparts.append(\"\
+          Partial output before error:\\n\" + out)\n\t\treturn {\"result\": \"\\n\"\
+          .join(parts)}\n\tfinally:\n\t\tsys.argv = old_argv\n\t\tsys.stdin = old_stdin"
+        code_language: python3
+        outputs:
+          result:
+            children: null
+            type: string
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1418175935839'
+          - text
+          value_type: string
+          variable: python_code
+        - value_selector:
+          - '1306233339483'
+          - case_input
+          value_type: string
+          variable: case_input
+      height: 52
+      id: '1132706257675'
+      position:
+        x: 900
+        y: 0
+      positionAbsolute:
+        x: 900
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: '{{code}}'
+        title: Template
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1418175935839'
+          - text
+          value_type: string
+          variable: code
+        - value_selector:
+          - '1306233339483'
+          - case_input
+          value_type: string
+          variable: case_input
+      height: 52
+      id: '1481725931353'
+      position:
+        x: 900
+        y: 200
+      positionAbsolute:
+        x: 900
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1481725931353'
+          - output
+          value_type: string
+          variable: python_code
+        - value_selector:
+          - '1132706257675'
+          - result
+          value_type: string
+          variable: result
+        selected: false
+        title: End
+        type: end
+      height: 52
+      id: '1114901444153'
+      position:
+        x: 1200
+        y: 0
+      positionAbsolute:
+        x: 1200
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

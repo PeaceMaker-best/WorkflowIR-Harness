@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it using the metadata below."
+title: "WorkflowIR-Harness: Contract-Guided Generation, Validation, and Runtime Repair"
+type: software
+version: 0.1.0
+date-released: 2026-09-02
+authors:
+  - family-names: "Hu"
+    given-names: "Yang"
+abstract: >-
+  An executable and auditable harness for validating and repairing generated visual workflows on Dify.

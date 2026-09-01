@@ -1,0 +1,719 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Code_3
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.1.13@10cbfe851fdf27f3c50ca2ca86293eb0c27da51ee74e58acebafd92b71c8d518
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: sawyer-shi/tongyi_aigc:0.0.1@01f2e5f8c3226e1bab678eed70baef4503d46aabf96c767ba58eaa48a6a8e290
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.2.0@9f39c2c2c1cd09180e2cc053090adc9886019483f502727467f136712b8b9639
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: hjlarry/mermaid_converter:0.0.1@46e755f0d92566a1f7a6e85086eac02a735afaa41479e7a2277b150abda70b18
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/google:0.1.0@c73cdc3dda5de500974ece93ce38eb6fc6bbf1399d38f1dbbbd70745ce154d0e
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1276254807205-source-1441069250121-target
+      source: '1276254807205'
+      sourceHandle: source
+      target: '1441069250121'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: if-else
+      id: 1441069250121-2124f6ee-7ebc-4d32-ab42-f2b0283be256-1527121746649-target
+      source: '1441069250121'
+      sourceHandle: 2124f6ee-7ebc-4d32-ab42-f2b0283be256
+      target: '1527121746649'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1441069250121-false-1606851486690-target
+      source: '1441069250121'
+      sourceHandle: 'false'
+      target: '1606851486690'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: variable-aggregator
+      id: 1606851486690-source-1327133552727-target
+      source: '1606851486690'
+      sourceHandle: source
+      target: '1327133552727'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: document-extractor
+      id: 1527121746649-0e8433e6-3ba5-4183-ae06-7dc8796b74c4-1984625320997-target
+      source: '1527121746649'
+      sourceHandle: 0e8433e6-3ba5-4183-ae06-7dc8796b74c4
+      target: '1984625320997'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: template-transform
+      id: 1527121746649-false-1087814118638-target
+      source: '1527121746649'
+      sourceHandle: 'false'
+      target: '1087814118638'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: document-extractor
+        targetType: code
+      id: 1984625320997-source-1622762810404-target
+      source: '1984625320997'
+      sourceHandle: source
+      target: '1622762810404'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: code
+      id: 1087814118638-source-1622762810404-target
+      source: '1087814118638'
+      sourceHandle: source
+      target: '1622762810404'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: if-else
+      id: 1622762810404-source-1371305907705-target
+      source: '1622762810404'
+      sourceHandle: source
+      target: '1371305907705'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1371305907705-9ec8421d-f33f-459f-8844-45e6dd3ea65f-1838647606052-target
+      source: '1371305907705'
+      sourceHandle: 9ec8421d-f33f-459f-8844-45e6dd3ea65f
+      target: '1838647606052'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1371305907705-false-1428776918458-target
+      source: '1371305907705'
+      sourceHandle: 'false'
+      target: '1428776918458'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: template-transform
+      id: 1838647606052-source-1810410300336-target
+      source: '1838647606052'
+      sourceHandle: source
+      target: '1810410300336'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: template-transform
+        targetType: variable-aggregator
+      id: 1810410300336-source-1327133552727-target
+      source: '1810410300336'
+      sourceHandle: source
+      target: '1327133552727'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: variable-aggregator
+      id: 1428776918458-source-1327133552727-target
+      source: '1428776918458'
+      sourceHandle: source
+      target: '1327133552727'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: tool
+      id: 1327133552727-source-1211222376421-target
+      source: '1327133552727'
+      sourceHandle: source
+      target: '1211222376421'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: end
+      id: 1211222376421-source-1613608756899-target
+      source: '1211222376421'
+      sourceHandle: source
+      target: '1613608756899'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - allowed_file_extensions: []
+          allowed_file_types:
+          - image
+          - document
+          - audio
+          - video
+          allowed_file_upload_methods:
+          - local_file
+          - remote_url
+          default: ''
+          hint: ''
+          label: source_code
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: file
+          variable: source_code
+        - default: ''
+          hint: ''
+          label: source_language
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: source_language
+      height: 52
+      id: '1276254807205'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 2124f6ee-7ebc-4d32-ab42-f2b0283be256
+          conditions:
+          - comparison_operator: exists
+            id: 7dfdd969-1c84-4dc6-9222-bcb0afa82122
+            value: ''
+            varType: file
+            variable_selector:
+            - '1276254807205'
+            - source_code
+          - comparison_operator: not empty
+            id: 7b8b542a-0a01-4f17-8023-79737cdc3e8b
+            value: ''
+            varType: string
+            variable_selector:
+            - '1276254807205'
+            - source_language
+          id: 2124f6ee-7ebc-4d32-ab42-f2b0283be256
+          logical_operator: or
+        selected: false
+        title: If-Else
+        type: if-else
+      height: 52
+      id: '1441069250121'
+      position:
+        x: 300
+        y: 0
+      positionAbsolute:
+        x: 300
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: '## No code provided
+
+
+          No code or case context was provided, so code semantics cannot be inferred
+          and no step-by-step explanation can be generated. Please provide Python
+          code or a code/document file to analyze.'
+        title: Template
+        type: template-transform
+        variables: []
+      height: 52
+      id: '1606851486690'
+      position:
+        x: 600
+        y: 0
+      positionAbsolute:
+        x: 600
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 0e8433e6-3ba5-4183-ae06-7dc8796b74c4
+          conditions:
+          - comparison_operator: exists
+            id: 4ba99d09-f4d2-49cf-94f7-d0b8dd555a97
+            value: ''
+            varType: file
+            variable_selector:
+            - '1276254807205'
+            - source_code
+          id: 0e8433e6-3ba5-4183-ae06-7dc8796b74c4
+          logical_operator: and
+        selected: false
+        title: If-Else 2
+        type: if-else
+      height: 52
+      id: '1527121746649'
+      position:
+        x: 600
+        y: 200
+      positionAbsolute:
+        x: 600
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        is_array_file: false
+        selected: false
+        title: Document Extractor
+        type: document-extractor
+        variable_selector:
+        - '1276254807205'
+        - source_code
+      height: 52
+      id: '1984625320997'
+      position:
+        x: 900
+        y: 0
+      positionAbsolute:
+        x: 900
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: '{{ source_language }}
+
+
+          No plain-text code body was provided; the supplied source language alone
+          does not contain executable code or code semantics.'
+        title: Template 2
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1276254807205'
+          - source_language
+          value_type: string
+          variable: source_language
+      height: 52
+      id: '1087814118638'
+      position:
+        x: 900
+        y: 200
+      positionAbsolute:
+        x: 900
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "def main(extracted_text: str, plain_text: str, source_language: str):\n\
+          \ttext = (extracted_text or '').strip() if extracted_text else ''\n\tif\
+          \ not text:\n\t\ttext = (plain_text or '').strip()\n\tlang = (source_language\
+          \ or '').strip().lower()\n\tif not text:\n\t\treturn {\n\t\t\t'analysis_text':\
+          \ 'No code content was available after extraction or normalization.',\n\t\
+          \t\t'is_valid_python': False,\n\t\t\t'validation_issue': 'No code content\
+          \ was provided or extracted.'\n\t\t}\n\tif lang and 'python' not in lang\
+          \ and 'py' not in lang:\n\t\treturn {\n\t\t\t'analysis_text': text,\n\t\t\
+          \t'is_valid_python': False,\n\t\t\t'validation_issue': 'The provided source\
+          \ language is not Python. This workflow normalizes and validates Python\
+          \ code only.'\n\t\t}\n\ttry:\n\t\tcompile(text, '<provided_code>', 'exec')\n\
+          \t\treturn {\n\t\t\t'analysis_text': text,\n\t\t\t'is_valid_python': True,\n\
+          \t\t\t'validation_issue': ''\n\t\t}\n\texcept SyntaxError as exc:\n\t\t\
+          return {\n\t\t\t'analysis_text': text,\n\t\t\t'is_valid_python': False,\n\
+          \t\t\t'validation_issue': f'SyntaxError at line {exc.lineno}: {exc.msg}'\n\
+          \t\t}\n\texcept Exception as exc:\n\t\treturn {\n\t\t\t'analysis_text':\
+          \ text,\n\t\t\t'is_valid_python': False,\n\t\t\t'validation_issue': f'Validation\
+          \ failed: {type(exc).__name__}: {exc}'\n\t\t}"
+        code_language: python3
+        outputs:
+          analysis_text:
+            children: null
+            type: string
+          is_valid_python:
+            children: null
+            type: boolean
+          validation_issue:
+            children: null
+            type: string
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1984625320997'
+          - text
+          value_type: file
+          variable: extracted_text
+        - value_selector:
+          - '1087814118638'
+          - output
+          value_type: string
+          variable: plain_text
+        - value_selector:
+          - '1276254807205'
+          - source_language
+          value_type: string
+          variable: source_language
+      height: 52
+      id: '1622762810404'
+      position:
+        x: 1200
+        y: 0
+      positionAbsolute:
+        x: 1200
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 9ec8421d-f33f-459f-8844-45e6dd3ea65f
+          conditions:
+          - comparison_operator: is
+            id: 5a5395aa-f011-477d-a90e-3f25ebda106c
+            value: true
+            varType: boolean
+            variable_selector:
+            - '1622762810404'
+            - is_valid_python
+          id: 9ec8421d-f33f-459f-8844-45e6dd3ea65f
+          logical_operator: and
+        selected: false
+        title: If-Else 3
+        type: if-else
+      height: 52
+      id: '1371305907705'
+      position:
+        x: 1500
+        y: 0
+      positionAbsolute:
+        x: 1500
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a Python code explanation assistant. Clarify code semantics
+            and explain the purpose of each step in concise Markdown. Do not invent
+            behavior beyond the supplied code.
+        - role: user
+          text: 'Analyze this validated Python code. Explain what the code does, its
+            semantics, and the purpose of each step. Return only one Markdown paragraph
+            suitable for a Markdown file.
+
+
+            Python code:
+
+            ```python
+
+            {{#1622762810404.analysis_text#}}
+
+            ```
+
+
+            Source language hint: {{#1276254807205.source_language#}}'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1838647606052'
+      position:
+        x: 1800
+        y: 200
+      positionAbsolute:
+        x: 1800
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        selected: false
+        template: '{{ analysis }}'
+        title: Template 3
+        type: template-transform
+        variables:
+        - value_selector:
+          - '1838647606052'
+          - text
+          value_type: string
+          variable: analysis
+      height: 52
+      id: '1810410300336'
+      position:
+        x: 2100
+        y: 0
+      positionAbsolute:
+        x: 2100
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a Python validation and documentation assistant. Explain validation
+            errors clearly in Markdown. Never claim invalid or malformed code executed
+            successfully.
+        - role: user
+          text: 'Create one Markdown paragraph explaining that the provided code could
+            not be validated as Python and therefore was not treated as successfully
+            executed. Include the validation issue and state that semantics cannot
+            be reliably inferred until the code is corrected. Do not include code
+            unless needed to identify the issue.
+
+
+            Validation issue: {{#1622762810404.validation_issue#}}
+
+
+            Available content:
+
+            {{#1622762810404.analysis_text#}}'
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1428776918458'
+      position:
+        x: 1800
+        y: 0
+      positionAbsolute:
+        x: 1800
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        output_type: string
+        selected: false
+        title: Variable Aggregator
+        type: variable-aggregator
+        variables:
+        - - '1606851486690'
+          - output
+        - - '1810410300336'
+          - output
+        - - '1428776918458'
+          - text
+      height: 52
+      id: '1327133552727'
+      position:
+        x: 2400
+        y: 0
+      positionAbsolute:
+        x: 2400
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        provider_id: bowenliang123/md_exporter/md_exporter
+        provider_name: bowenliang123/md_exporter/md_exporter
+        provider_type: builtin
+        selected: false
+        title: md_to_md
+        tool_configurations: {}
+        tool_label: Markdown 转 md 文件
+        tool_name: md_to_md
+        tool_node_version: '2'
+        tool_parameters:
+          md_text:
+            type: mixed
+            value: '{{#1327133552727.output#}}'
+        type: tool
+      height: 52
+      id: '1211222376421'
+      position:
+        x: 2700
+        y: 0
+      positionAbsolute:
+        x: 2700
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1327133552727'
+          - output
+          value_type: string
+          variable: explanation
+        - value_selector:
+          - '1211222376421'
+          - files
+          value_type: array[file]
+          variable: markdown
+        selected: false
+        title: End
+        type: end
+      height: 52
+      id: '1613608756899'
+      position:
+        x: 3000
+        y: 0
+      positionAbsolute:
+        x: 3000
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

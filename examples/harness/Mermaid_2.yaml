@@ -1,0 +1,887 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Mermaid_2
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.1.13@10cbfe851fdf27f3c50ca2ca86293eb0c27da51ee74e58acebafd92b71c8d518
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: sawyer-shi/tongyi_aigc:0.0.1@01f2e5f8c3226e1bab678eed70baef4503d46aabf96c767ba58eaa48a6a8e290
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.2.0@9f39c2c2c1cd09180e2cc053090adc9886019483f502727467f136712b8b9639
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: hjlarry/mermaid_converter:0.0.1@46e755f0d92566a1f7a6e85086eac02a735afaa41479e7a2277b150abda70b18
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/google:0.1.0@c73cdc3dda5de500974ece93ce38eb6fc6bbf1399d38f1dbbbd70745ce154d0e
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: if-else
+      id: 1380266138461-source-1229183213138-target
+      source: '1380266138461'
+      sourceHandle: source
+      target: '1229183213138'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: llm
+      id: 1229183213138-1b2ee1f4-293c-42b7-8f9c-2fc2856f2e55-1784917731927-target
+      source: '1229183213138'
+      sourceHandle: 1b2ee1f4-293c-42b7-8f9c-2fc2856f2e55
+      target: '1784917731927'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1382200801131-source-1582972650555-target
+      source: '1382200801131'
+      sourceHandle: source
+      target: '1582972650555'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1382200801131-source-1522169036564-target
+      source: '1382200801131'
+      sourceHandle: source
+      target: '1522169036564'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: if-else
+        targetType: http-request
+      id: 1229183213138-0ac1295b-bd6e-4362-b22d-9f1681167e16-1579868095986-target
+      source: '1229183213138'
+      sourceHandle: 0ac1295b-bd6e-4362-b22d-9f1681167e16
+      target: '1579868095986'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: http-request
+        targetType: code
+      id: 1579868095986-source-1510922811462-target
+      source: '1579868095986'
+      sourceHandle: source
+      target: '1510922811462'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: iteration
+      id: 1510922811462-source-1371749894512-target
+      source: '1510922811462'
+      sourceHandle: source
+      target: '1371749894512'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: iteration
+        targetType: llm
+      id: 1371749894512-source-1326222245876-target
+      source: '1371749894512'
+      sourceHandle: source
+      target: '1326222245876'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1371749894512'
+        sourceType: iteration-start
+        targetType: llm
+      id: 1371749894512start-source-1822741087289-target
+      source: 1371749894512start
+      sourceHandle: source
+      target: '1822741087289'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1326222245876-source-1737921829109-target
+      source: '1326222245876'
+      sourceHandle: source
+      target: '1737921829109'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1916215335072-source-1582972650555-target
+      source: '1916215335072'
+      sourceHandle: source
+      target: '1582972650555'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: variable-aggregator
+      id: 1916215335072-source-1522169036564-target
+      source: '1916215335072'
+      sourceHandle: source
+      target: '1522169036564'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: end
+      id: 1582972650555-source-1579728706030-target
+      source: '1582972650555'
+      sourceHandle: source
+      target: '1579728706030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: variable-aggregator
+        targetType: end
+      id: 1522169036564-source-1579728706030-target
+      source: '1522169036564'
+      sourceHandle: source
+      target: '1579728706030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1326222245876-source-1579728706030-target
+      source: '1326222245876'
+      sourceHandle: source
+      target: '1579728706030'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1784917731927-source-1265422940344-target
+      source: '1784917731927'
+      sourceHandle: source
+      target: '1265422940344'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: tool
+      id: 1265422940344-source-1382200801131-target
+      source: '1265422940344'
+      sourceHandle: source
+      target: '1382200801131'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: code
+      id: 1737921829109-source-1766759583283-target
+      source: '1737921829109'
+      sourceHandle: source
+      target: '1766759583283'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: tool
+      id: 1766759583283-source-1916215335072-target
+      source: '1766759583283'
+      sourceHandle: source
+      target: '1916215335072'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: code
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: code
+        - default: ''
+          hint: ''
+          label: knowledge_url
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: knowledge_url
+      height: 52
+      id: '1380266138461'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        cases:
+        - case_id: 1b2ee1f4-293c-42b7-8f9c-2fc2856f2e55
+          conditions:
+          - comparison_operator: not empty
+            id: 8bec3f05-1f1b-40a3-817f-bc55ea3d55ba
+            value: ''
+            varType: string
+            variable_selector:
+            - '1380266138461'
+            - code
+          id: 1b2ee1f4-293c-42b7-8f9c-2fc2856f2e55
+          logical_operator: and
+        - case_id: 0ac1295b-bd6e-4362-b22d-9f1681167e16
+          conditions:
+          - comparison_operator: not empty
+            id: e31dbeb4-8f45-42e7-becc-751f5922fb24
+            value: ''
+            varType: string
+            variable_selector:
+            - '1380266138461'
+            - knowledge_url
+          id: 0ac1295b-bd6e-4362-b22d-9f1681167e16
+          logical_operator: and
+        selected: false
+        title: If-Else
+        type: if-else
+      height: 52
+      id: '1229183213138'
+      position:
+        x: 300
+        y: 0
+      positionAbsolute:
+        x: 300
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a senior software architect. Analyze code documentation or
+            source-code-related documentation in any programming language. Identify
+            system components, modules, services, data stores, external dependencies,
+            responsibilities, and relationships. Produce only valid Mermaid syntax
+            for a clear system architecture diagram. Do not include explanations,
+            markdown fences, or text outside the Mermaid code.
+        - role: user
+          text: 'Code documentation:
+
+            {{#1380266138461.code#}}
+
+
+            Generate a Mermaid system architecture diagram. Use concise component
+            labels and meaningful directed relationships. Output only Mermaid code.'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1784917731927'
+      position:
+        x: 600
+        y: 200
+      positionAbsolute:
+        x: 600
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re\n\ndef main(raw: str):\n\ttext = (raw or '').strip()\n\t\
+          fence = chr(96) * 3\n\tif text.startswith(fence):\n\t\tlines = text.splitlines()\n\
+          \t\ttext = '\\n'.join(lines[1:]) if len(lines) > 1 else ''\n\ttext = text.rstrip()\n\
+          \tif text.endswith(fence):\n\t\ttext = text[:-3].rstrip()\n\tlines = [line.rstrip()\
+          \ for line in text.splitlines() if line.strip()]\n\tif lines and lines[0].strip().lower()\
+          \ == 'mindmap':\n\t\tclean = ['mindmap']\n\t\tfor line in lines[1:41]:\n\
+          \t\t\tindent = line[:len(line) - len(line.lstrip())]\n\t\t\tlabel = line.strip()\n\
+          \t\t\tis_root = label.lower().startswith('root')\n\t\t\tif is_root:\n\t\t\
+          \t\tmatch = re.search(r'root\\s*\\(\\((.*?)\\)\\)', label, re.I)\n\t\t\t\
+          \tlabel = match.group(1) if match else label[4:]\n\t\t\tlabel = re.sub(r'[^\\\
+          w一-鿿 .,-]', ' ', label)\n\t\t\tlabel = re.sub(r'\\s+', ' ', label).strip()[:64]\
+          \ or 'item'\n\t\t\tclean.append(indent + ('root((' + label + '))' if is_root\
+          \ else label))\n\t\ttext = '\\n'.join(clean)\n\treturn {'mermaid_code':\
+          \ text.strip()}\n"
+        code_language: python3
+        outputs:
+          mermaid_code:
+            children: null
+            type: string
+        selected: false
+        title: Code
+        type: code
+        variables:
+        - value_selector:
+          - '1784917731927'
+          - text
+          value_type: string
+          variable: raw
+      height: 52
+      id: '1265422940344'
+      position:
+        x: 900
+        y: 200
+      positionAbsolute:
+        x: 900
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        provider_id: hjlarry/mermaid_converter/mermaid_converter
+        provider_name: hjlarry/mermaid_converter/mermaid_converter
+        provider_type: builtin
+        selected: false
+        title: Mermaid Converter
+        tool_configurations:
+          output_format:
+            type: constant
+            value: png
+          theme:
+            type: constant
+            value: default
+        tool_label: Mermaid转换器
+        tool_name: mermaid_converter
+        tool_node_version: '2'
+        tool_parameters:
+          mermaid_code:
+            type: mixed
+            value: '{{#1265422940344.mermaid_code#}}'
+        type: tool
+      height: 52
+      id: '1382200801131'
+      position:
+        x: 1200
+        y: 200
+      positionAbsolute:
+        x: 1200
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        authorization:
+          config: null
+          type: no-auth
+        body:
+          data: []
+          type: none
+        headers: Authorization:Bearer:github_xxx
+        method: get
+        params: ''
+        retry_config:
+          max_retries: 3
+          retry_enabled: true
+          retry_interval: 100
+        selected: false
+        ssl_verify: true
+        timeout:
+          max_connect_timeout: 0
+          max_read_timeout: 0
+          max_write_timeout: 0
+        title: HTTP Request
+        type: http-request
+        url: '{{#1380266138461.knowledge_url#}}'
+        variables: []
+      height: 52
+      id: '1579868095986'
+      position:
+        x: 600
+        y: 0
+      positionAbsolute:
+        x: 600
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re\n\ndef main(page_body: str):\n\ttext = page_body or ''\n\t\
+          text = re.sub(r'(?is)<script.*?</script>', ' ', text)\n\ttext = re.sub(r'(?is)<style.*?</style>',\
+          \ ' ', text)\n\ttext = re.sub(r'(?s)<[^>]+>', ' ', text)\n\ttext = re.sub(r'&nbsp;',\
+          \ ' ', text)\n\ttext = re.sub(r'&amp;', '&', text)\n\ttext = re.sub(r'&lt;',\
+          \ '<', text)\n\ttext = re.sub(r'&gt;', '>', text)\n\ttext = re.sub(r'&quot;',\
+          \ '\"', text)\n\ttext = re.sub(r'&#39;', \"'\", text)\n\ttext = re.sub(r'\\\
+          s+', ' ', text).strip()\n\tif not text:\n\t\treturn {'chunks': []}\n\twords\
+          \ = text.split()\n\tchunk_size = 900\n\toverlap = 100\n\tchunks = []\n\t\
+          start = 0\n\twhile start < len(words):\n\t\tchunk = ' '.join(words[start:start\
+          \ + chunk_size]).strip()\n\t\tif chunk:\n\t\t\tchunks.append(chunk)\n\t\t\
+          if start + chunk_size >= len(words):\n\t\t\tbreak\n\t\tstart += max(1, chunk_size\
+          \ - overlap)\n\treturn {'chunks': chunks}"
+        code_language: python3
+        outputs:
+          chunks:
+            children: null
+            type: array[string]
+        selected: false
+        title: Code 2
+        type: code
+        variables:
+        - value_selector:
+          - '1579868095986'
+          - body
+          value_type: string
+          variable: page_body
+      height: 52
+      id: '1510922811462'
+      position:
+        x: 900
+        y: 0
+      positionAbsolute:
+        x: 900
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        error_handle_mode: terminated
+        flatten_output: true
+        is_parallel: false
+        iterator_input_type: array[string]
+        iterator_selector:
+        - '1510922811462'
+        - chunks
+        output_selector:
+        - '1822741087289'
+        - text
+        output_type: array[string]
+        parallel_nums: 10
+        selected: false
+        start_node_id: 1371749894512start
+        title: Iteration
+        type: iteration
+      height: 52
+      id: '1371749894512'
+      position:
+        x: 1200
+        y: -400
+      positionAbsolute:
+        x: 1200
+        y: -400
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        desc: ''
+        isInIteration: true
+        selected: false
+        title: ''
+        type: iteration-start
+      draggable: false
+      height: 52
+      id: 1371749894512start
+      parentId: '1371749894512'
+      position:
+        x: 24
+        y: 68
+      positionAbsolute:
+        x: 24
+        y: 68
+      selectable: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom-iteration-start
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        isInIteration: true
+        iteration_id: '1371749894512'
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a precise research summarizer. Summarize the provided web-page
+            content chunk. Preserve important facts, concepts, entities, procedures,
+            and relationships. Do not add information not present in the chunk. Output
+            a concise paragraph with no markdown headings.
+        - role: user
+          text: 'Content chunk:
+
+            {{#1371749894512.item#}}
+
+
+            Summarize this chunk in 3-6 sentences.'
+        selected: false
+        title: LLM 2
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1822741087289'
+      parentId: '1371749894512'
+      position:
+        x: 100
+        y: 68
+      positionAbsolute:
+        x: 100
+        y: 68
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a knowledge synthesis expert. Combine chunk-level summaries
+            into one coherent final knowledge summary. Remove duplication, preserve
+            important facts and relationships, and organize the information logically.
+            Output only the final summary text.
+        - role: user
+          text: 'Chunk-level summaries:
+
+            {{#1371749894512.output#}}
+
+
+            Create a comprehensive final knowledge summary of the web page.'
+        selected: false
+        title: LLM 3
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1326222245876'
+      position:
+        x: 1500
+        y: 0
+      positionAbsolute:
+        x: 1500
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a Mermaid mind-map designer. Create valid Mermaid mindmap
+            syntax from a knowledge summary. Use a central topic and hierarchical
+            branches for major themes, subtopics, and key details. Output only Mermaid
+            code, with no markdown fences or explanations.
+        - role: user
+          text: 'Knowledge summary:
+
+            {{#1326222245876.text#}}
+
+
+            Generate Mermaid mindmap code representing this knowledge.'
+        selected: false
+        title: LLM 4
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1737921829109'
+      position:
+        x: 1800
+        y: 0
+      positionAbsolute:
+        x: 1800
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        code: "import re\n\ndef main(raw: str):\n\ttext = (raw or '').strip()\n\t\
+          fence = chr(96) * 3\n\tif text.startswith(fence):\n\t\tlines = text.splitlines()\n\
+          \t\ttext = '\\n'.join(lines[1:]) if len(lines) > 1 else ''\n\ttext = text.rstrip()\n\
+          \tif text.endswith(fence):\n\t\ttext = text[:-3].rstrip()\n\tlines = [line.rstrip()\
+          \ for line in text.splitlines() if line.strip()]\n\tif lines and lines[0].strip().lower()\
+          \ == 'mindmap':\n\t\tclean = ['mindmap']\n\t\tfor line in lines[1:41]:\n\
+          \t\t\tindent = line[:len(line) - len(line.lstrip())]\n\t\t\tlabel = line.strip()\n\
+          \t\t\tis_root = label.lower().startswith('root')\n\t\t\tif is_root:\n\t\t\
+          \t\tmatch = re.search(r'root\\s*\\(\\((.*?)\\)\\)', label, re.I)\n\t\t\t\
+          \tlabel = match.group(1) if match else label[4:]\n\t\t\tlabel = re.sub(r'[^\\\
+          w一-鿿 .,-]', ' ', label)\n\t\t\tlabel = re.sub(r'\\s+', ' ', label).strip()[:64]\
+          \ or 'item'\n\t\t\tclean.append(indent + ('root((' + label + '))' if is_root\
+          \ else label))\n\t\ttext = '\\n'.join(clean)\n\treturn {'mermaid_code':\
+          \ text.strip()}\n"
+        code_language: python3
+        outputs:
+          mermaid_code:
+            children: null
+            type: string
+        selected: false
+        title: Code 3
+        type: code
+        variables:
+        - value_selector:
+          - '1737921829109'
+          - text
+          value_type: string
+          variable: raw
+      height: 52
+      id: '1766759583283'
+      position:
+        x: 2100
+        y: 0
+      positionAbsolute:
+        x: 2100
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        provider_id: hjlarry/mermaid_converter/mermaid_converter
+        provider_name: hjlarry/mermaid_converter/mermaid_converter
+        provider_type: builtin
+        selected: false
+        title: Mermaid Converter 2
+        tool_configurations:
+          output_format:
+            type: constant
+            value: png
+          theme:
+            type: constant
+            value: default
+        tool_label: Mermaid转换器
+        tool_name: mermaid_converter
+        tool_node_version: '2'
+        tool_parameters:
+          mermaid_code:
+            type: mixed
+            value: '{{#1766759583283.mermaid_code#}}'
+        type: tool
+      height: 52
+      id: '1916215335072'
+      position:
+        x: 2400
+        y: 0
+      positionAbsolute:
+        x: 2400
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        output_type: string
+        selected: false
+        title: Variable Aggregator
+        type: variable-aggregator
+        variables:
+        - - '1265422940344'
+          - mermaid_code
+        - - '1766759583283'
+          - mermaid_code
+      height: 52
+      id: '1582972650555'
+      position:
+        x: 2700
+        y: 0
+      positionAbsolute:
+        x: 2700
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        output_type: null
+        selected: false
+        title: Variable Aggregator 2
+        type: variable-aggregator
+        variables:
+        - - '1382200801131'
+          - files
+        - - '1916215335072'
+          - files
+      height: 52
+      id: '1522169036564'
+      position:
+        x: 2700
+        y: 200
+      positionAbsolute:
+        x: 2700
+        y: 200
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1582972650555'
+          - output
+          value_type: string
+          variable: mermaid_code
+        - value_selector:
+          - '1522169036564'
+          - output
+          value_type: null
+          variable: mermaid_pic
+        - value_selector:
+          - '1326222245876'
+          - text
+          value_type: string
+          variable: summary
+        selected: false
+        title: End
+        type: end
+      height: 52
+      id: '1579728706030'
+      position:
+        x: 3000
+        y: 0
+      positionAbsolute:
+        x: 3000
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

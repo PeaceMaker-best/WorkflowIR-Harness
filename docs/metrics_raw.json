@@ -1,0 +1,114 @@
+{
+  "metrics": {
+    "official": {
+      "trials": 15,
+      "import_publish_pass": 15,
+      "execution_pass": 12,
+      "output_contract_pass": 9,
+      "semantic_task_pass": 8,
+      "stable_task_pass": 2,
+      "workflow_count": 5,
+      "infrastructure_failures": 0,
+      "degraded_artifact_trials": 3,
+      "directed_repair_trials": 0,
+      "directed_repair_attempts": 0,
+      "failure_classes": {
+        "none": 9,
+        "execution_node": 3,
+        "binding_output_contract": 3
+      },
+      "per_case": {
+        "Code_1": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 2,
+          "stable_task_pass": false
+        },
+        "Code_2": {
+          "trials": 3,
+          "execution_pass": 0,
+          "output_contract_pass": 0,
+          "semantic_task_pass": 0,
+          "stable_task_pass": false
+        },
+        "Code_3": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Mermaid_1": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Mermaid_2": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 0,
+          "semantic_task_pass": 0,
+          "stable_task_pass": false
+        }
+      }
+    },
+    "ours": {
+      "trials": 15,
+      "import_publish_pass": 15,
+      "execution_pass": 14,
+      "output_contract_pass": 14,
+      "semantic_task_pass": 14,
+      "stable_task_pass": 4,
+      "workflow_count": 5,
+      "infrastructure_failures": 1,
+      "degraded_artifact_trials": 3,
+      "directed_repair_trials": 0,
+      "directed_repair_attempts": 0,
+      "failure_classes": {
+        "none": 14,
+        "execution_node": 1
+      },
+      "per_case": {
+        "Code_1": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Code_2": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Code_3": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Mermaid_1": {
+          "trials": 3,
+          "execution_pass": 3,
+          "output_contract_pass": 3,
+          "semantic_task_pass": 3,
+          "stable_task_pass": true
+        },
+        "Mermaid_2": {
+          "trials": 3,
+          "execution_pass": 2,
+          "output_contract_pass": 2,
+          "semantic_task_pass": 2,
+          "stable_task_pass": false
+        }
+      }
+    }
+  },
+  "infra_retry_audit": []
+}

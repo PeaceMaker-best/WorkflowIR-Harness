@@ -1,0 +1,231 @@
+app:
+  description: ''
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Mermaid_1
+  use_icon_as_answer_icon: false
+dependencies:
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/tongyi:0.1.13@10cbfe851fdf27f3c50ca2ca86293eb0c27da51ee74e58acebafd92b71c8d518
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: sawyer-shi/tongyi_aigc:0.0.1@01f2e5f8c3226e1bab678eed70baef4503d46aabf96c767ba58eaa48a6a8e290
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: bowenliang123/md_exporter:2.2.0@9f39c2c2c1cd09180e2cc053090adc9886019483f502727467f136712b8b9639
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: hjlarry/mermaid_converter:0.0.1@46e755f0d92566a1f7a6e85086eac02a735afaa41479e7a2277b150abda70b18
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/echarts:0.0.1@e390de4320a5ab32ef24899983f84c31aa39e4690c7b294be11f2c10268c3a68
+    version: null
+- current_identifier: null
+  type: marketplace
+  value:
+    marketplace_plugin_unique_identifier: langgenius/google:0.1.0@c73cdc3dda5de500974ece93ce38eb6fc6bbf1399d38f1dbbbd70745ce154d0e
+    version: null
+kind: app
+version: 0.4.0
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      enabled: false
+    opening_statement: ''
+    retriever_resource:
+      enabled: false
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1409055464340-source-1925973599312-target
+      source: '1409055464340'
+      sourceHandle: source
+      target: '1925973599312'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: tool
+      id: 1925973599312-source-1697864286313-target
+      source: '1925973599312'
+      sourceHandle: source
+      target: '1697864286313'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: end
+      id: 1697864286313-source-1728850519298-target
+      source: '1697864286313'
+      sourceHandle: source
+      target: '1728850519298'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - default: ''
+          hint: ''
+          label: code
+          max_length: 32768
+          options: []
+          placeholder: ''
+          required: false
+          type: paragraph
+          variable: code
+      height: 52
+      id: '1409055464340'
+      position:
+        x: 0
+        y: 0
+      positionAbsolute:
+        x: 0
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        model:
+          completion_params:
+            max_tokens: 32768
+            temperature: 0.7
+          mode: chat
+          name: qwen3-vl-plus
+          provider: langgenius/tongyi/tongyi
+        prompt_template:
+        - role: system
+          text: You are a senior software architect. Analyze the provided code documentation
+            across any programming language and produce a system architecture diagram
+            in Mermaid syntax. Output ONLY valid Mermaid code (using graph TD or flowchart
+            syntax) that accurately represents the system's components, modules, services,
+            data stores, and their relationships. Do not include explanations, markdown
+            fences, or any text outside the Mermaid code.
+        - role: user
+          text: 'Analyze the following code documentation and generate the Mermaid
+            syntax for its system architecture diagram:
+
+
+            {{#1409055464340.code#}}'
+        selected: false
+        title: LLM
+        type: llm
+        vision:
+          enabled: false
+      height: 52
+      id: '1925973599312'
+      position:
+        x: 300
+        y: 0
+      positionAbsolute:
+        x: 300
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        provider_id: hjlarry/mermaid_converter/mermaid_converter
+        provider_name: hjlarry/mermaid_converter/mermaid_converter
+        provider_type: builtin
+        selected: false
+        title: Mermaid Converter
+        tool_configurations:
+          output_format:
+            type: constant
+            value: png
+          theme:
+            type: constant
+            value: default
+        tool_label: Mermaid转换器
+        tool_name: mermaid_converter
+        tool_node_version: '2'
+        tool_parameters:
+          mermaid_code:
+            type: mixed
+            value: '{{#1925973599312.text#}}'
+        type: tool
+      height: 52
+      id: '1697864286313'
+      position:
+        x: 600
+        y: 0
+      positionAbsolute:
+        x: 600
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    - data:
+        outputs:
+        - value_selector:
+          - '1925973599312'
+          - text
+          value_type: string
+          variable: mermaid_code
+        - value_selector:
+          - '1697864286313'
+          - files
+          value_type: null
+          variable: mermaid_pic
+        selected: false
+        title: End
+        type: end
+      height: 52
+      id: '1728850519298'
+      position:
+        x: 900
+        y: 0
+      positionAbsolute:
+        x: 900
+        y: 0
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 242
+    viewport:
+      x: 0
+      y: 0
+      zoom: 1
+  rag_pipeline_variables: []

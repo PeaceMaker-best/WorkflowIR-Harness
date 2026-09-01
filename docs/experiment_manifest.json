@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "evaluation_kind": "scoped_developer_regression",
+  "claim_boundary": "Not a blind test and not a full benchmark leaderboard result.",
+  "date": "2026-09-02",
+  "platform": {
+    "name": "Dify",
+    "version": "1.9.2"
+  },
+  "model": {
+    "name": "doubao-seed-evolving",
+    "thinking": "disabled",
+    "temperature": 0.0
+  },
+  "experience_pool_enabled": false,
+  "cases": [
+    "Code_1",
+    "Code_2",
+    "Code_3",
+    "Mermaid_1",
+    "Mermaid_2"
+  ],
+  "inputs_per_case": 3,
+  "execution_trials_per_arm": 15,
+  "arms": {
+    "official": "Official Agentic-generated workflow plus shared Dify compatibility adapter.",
+    "ours": "Staged workflow plus shared compatibility adapter, requirement contracts, validation, and bounded directed repair."
+  },
+  "workflow_sha256": {
+    "official": {
+      "Code_1": "d51014a2c175df80cb8e394e637481b2d291b5655d84b51824270eb634a0207b",
+      "Code_2": "50687da0a586c8744eab859584ddb14886c2cc4962d8ed981d4e760c5b34e90b",
+      "Code_3": "24742ef07623e08a3b6ca18c97ae49fd2a1cbb0d0eeb8a4a8765cd95d2574448",
+      "Mermaid_1": "1e39181d3481931dc9dde702d2b095bbcd3261daee705c80bd65c538ad3b171c",
+      "Mermaid_2": "2b71314c14d23b266aae85275a3cdd7fe452bd8e3db79fadd937429e2b91ef3a"
+    },
+    "ours": {
+      "Code_1": "fa6268271eea8b5540a4a9f909a5f3e5e6dd849b4d0dbb8e5ab396f690ef7e3f",
+      "Code_2": "6c90c748cd47a83ebf629bdfc5dd9550b6ca17c7f7a5acbf7894629f414f51fb",
+      "Code_3": "23a1b8151ec181e314fbe05bd2f6be2d701589d1b833d6a03761906fc2fc03ce",
+      "Mermaid_1": "7f738bc6fc9f29903aeebe1b44658472f34ceab4ba3b61019c065305fb6f0f58",
+      "Mermaid_2": "2a3039c87e6582a230baa0ab4b05e01b84e3dcc03aec247a435070ae3fa20ff9"
+    }
+  }
+}
