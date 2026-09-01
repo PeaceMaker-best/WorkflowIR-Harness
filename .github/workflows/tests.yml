@@ -18,5 +18,6 @@ jobs:
       - run: pip install -r requirements.txt
       - run: PYTHONPATH=src python tests/offline_selftest.py
       - run: PYTHONPATH=src python tests/experience_pool_selftest.py
+      - run: PYTHONPATH=src python tests/self_evolving_pool_selftest.py
       - run: PYTHONPATH=src python tests/runner_logic_selftest.py
       - run: PYTHONPATH=src python tests/contract_repairs_selftest.py --yaml-dir examples/harness

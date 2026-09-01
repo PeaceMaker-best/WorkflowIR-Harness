@@ -1,13 +1,15 @@
 # Task-scoped runtime experience pool
 
 The experience pool reduces repeated repair cost without becoming an answer cache or leaking solutions across benchmark tasks.
+The v0.2 runner wraps these base storage and retrieval mechanics with the candidate, active, and quarantined lifecycle documented in [SELF_EVOLUTION.md](SELF_EVOLUTION.md). Only promoted active policies are injected online.
+
 
 ## Lifecycle
 
 1. Execute a validated workflow.
 2. Detect a node-level runtime error from the trace or output error envelope.
 3. Classify the failure and identify the failing node type.
-4. Retrieve up to two verified policies under strict same-task gates.
+4. Retrieve the top promoted policy under strict same-task gates for attributable feedback.
 5. Inject the current trace as authoritative evidence and past policies as optional hints.
 6. Rerun the complete graph; never accept a local repair without full-graph validation.
 7. Persist a policy only when the repair produces a successful end-to-end run.

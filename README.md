@@ -1,17 +1,17 @@
-# WorkflowIR-Harness: Contract-Guided Generation, Validation, and Runtime Repair
+# WorkflowIR-Harness: Contract-Guided Generation, Runtime Repair, and Safe Self-Evolution
 
 This package turns generated workflow configurations into an auditable execution experiment instead of judging them by JSON equality.
 
 ## Abstract
 
-WorkflowIR-Harness converts natural-language workflow generation from a JSON imitation task into an executable, auditable pipeline. It separates requirement semantics, graph structure, parameter binding, platform adaptation, and runtime repair, then evaluates whether a generated workflow can actually complete fixed functional inputs on Dify.
+WorkflowIR-Harness converts natural-language workflow generation from a JSON imitation task into an executable, auditable pipeline. It separates requirement semantics, graph structure, parameter binding, platform adaptation, runtime repair, and evidence-gated policy evolution, then evaluates whether a generated workflow can actually complete fixed functional inputs on Dify.
 
 ## Contributions
 
 - Requirement-contract repair and deterministic graph validation before platform import.
 - A Dify adapter that keeps platform compatibility changes separate from workflow semantics.
 - Trace-guided node repair with at most two retries; topology failures remain full-regeneration events.
-- A task-isolated runtime experience pool that stores only normalized failure signatures and verified repair policies.
+- A task-isolated repair memory with candidate promotion, version lineage, automatic quarantine, and secret-safe audit events.
 
 ## Frozen developer result
 
@@ -25,7 +25,7 @@ The scoped evaluation contains five Developer workflows and three fixed inputs p
 
 ## Pipeline
 
-`Requirement contract -> shared Dify compatibility adapter -> import/publish -> execute -> output-contract check -> semantic judge -> typed repair -> full rerun`
+`Requirement contract -> adapter -> execute -> contract check -> typed repair -> full rerun -> candidate evidence -> promote/quarantine`
 
 The core design separates:
 
@@ -56,16 +56,22 @@ See:
 
 The current evidence covers five Developer workflows and fifteen functional executions per arm. It supports a scoped engineering claim, not a full Chat2Workflow leaderboard claim.
 
+The frozen result predates the self-evolving policy layer; no online uplift from that layer is claimed yet.
+
 ## Runtime experience pool
 
-The pool is a repair memory, not an answer cache. A policy is written only after a failed node is repaired and the complete workflow passes again.
+The pool is a repair memory, not an answer cache. A policy is written only after a failed node is repaired and the complete workflow passes again. New policies remain shadow-only candidates until repeated whole-graph success promotes them to active use; two consecutive policy failures trigger quarantine.
+
 
 Stored fields:
 
 - exact task scope and failure class;
 - failing node type and graph node-type signature;
 - normalized, redacted error tokens;
-- generic repair policy plus success/failure counters and timestamps.
+- versioned generic repair policy, lifecycle state, lineage, counters, and timestamps;
+- append-only promotion and quarantine events.
+
+Only active policies can enter a repair prompt. Candidate and quarantined policies remain available for offline analysis and audit.
 
 Retrieval gates:
 
@@ -84,6 +90,7 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 PYTHONPATH=src python tests/experience_pool_selftest.py
+PYTHONPATH=src python tests/self_evolving_pool_selftest.py
 ```
 
 To run the frozen three-input execution harness, point it at a Dify installation and a Chat2Workflow-compatible check file:
@@ -95,7 +102,7 @@ export BENCH_CASE_FILES=/path/to/case_files
 PYTHONPATH=src python src/run_dify_all3.py --arm staged --workers 5 --experience-db results/repair_memory.sqlite --result-dir results/run
 ```
 
-`--experience-db` is optional. Without it, the runner performs trace-guided repair but does not persist repair experience.
+`--experience-db` enables safe self-evolution with default promotion and quarantine gates. Without it, the runner performs trace-guided repair but does not persist repair experience.
 
 ## Reproducibility
 
@@ -104,6 +111,7 @@ PYTHONPATH=src python src/run_dify_all3.py --arm staged --workers 5 --experience
 - [Infrastructure-retried result](docs/SCOPED_DEVELOPER_EVAL_INFRA_RETRIED.md)
 - [Bad cases and repair decisions](docs/BAD_CASES_AND_REPAIRS.md)
 - [Runtime experience pool](docs/RUNTIME_EXPERIENCE_POOL.md)
+- [Safe self-evolution](docs/SELF_EVOLUTION.md)
 
 ## Acknowledgement
 

@@ -124,7 +124,10 @@ class RuntimeExperiencePool:
         item_id = hashlib.sha256(identity.encode()).hexdigest()[:24]
         stamp = now_iso()
         with self.lock, self.connect() as db:
-            db.execute("""INSERT INTO experiences VALUES (?, ?, ?, ?, ?, ?, ?, 1, 0, ?, ?, NULL)
+            db.execute("""INSERT INTO experiences(
+              id, task_scope, failure_class, node_type, error_tokens, graph_types,
+              guidance, success_count, failure_count, created_at, updated_at, last_used_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, 1, 0, ?, ?, NULL)
             ON CONFLICT(id) DO UPDATE SET success_count=success_count+1, updated_at=excluded.updated_at""",
             (item_id, scope, failure, node, json.dumps(error_tokens), json.dumps(signature), policy, stamp, stamp))
             db.execute("""DELETE FROM experiences WHERE task_scope=? AND id IN

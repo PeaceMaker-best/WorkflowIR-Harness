@@ -17,7 +17,11 @@ import yaml
 
 from dify_yaml_adapter import patch_runtime_contracts
 from requirement_contract_repairs import apply_requirement_contract_repairs
-from runtime_experience_pool import RuntimeExperiencePool, extract_node_type, render_repair_context
+from runtime_experience_pool import extract_node_type
+from self_evolving_pool import (
+    SelfEvolvingExperiencePool,
+    render_evolving_repair_context,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent
 CONSOLE = os.environ.get("DIFY_CONSOLE_URL", "http://127.0.0.1:18081/console/api")
@@ -297,7 +301,7 @@ def run_one(
     model_provider: str = DEFAULT_PROVIDER,
     model_name: str = DEFAULT_MODEL,
     thinking_mode: str = "disabled",
-    experience_pool: RuntimeExperiencePool | None = None,
+    experience_pool: SelfEvolvingExperiencePool | None = None,
 ) -> Dict[str, Any]:
     result: Dict[str, Any] = {"arm": arm, "case": case, "thread": threading.current_thread().name}
     session: requests.Session | None = None
@@ -321,6 +325,9 @@ def run_one(
         result["experience_scope"] = task_scope
         result["experience_retrievals"] = []
         result["experience_learned_ids"] = []
+        result["experience_learned"] = []
+        result["experience_feedback"] = []
+        result["experience_transitions"] = []
 
         result["adapter_actions"] = adapter_actions
         session = login()
@@ -378,10 +385,33 @@ def run_one(
                 current_failure_class = classify_failure(data.get("error") or payload, trace)
 
             recovered = execution_pass and effective_output_contract_pass
-            if experience_pool is not None and recovered and pending_learning is not None:
-                experience_pool.feedback(pending_experience_ids, succeeded=True)
-                learned_id = experience_pool.record_success(**pending_learning)
-                result["experience_learned_ids"].append(learned_id)
+            if (
+                experience_pool is not None
+                and recovered
+                and pending_learning is not None
+            ):
+                if pending_experience_ids:
+                    outcomes = experience_pool.feedback(
+                        pending_experience_ids, succeeded=True
+                    )
+                    result["experience_feedback"].extend(outcomes)
+                    result["experience_transitions"].extend(
+                        item for item in outcomes if item["transitioned"]
+                    )
+                else:
+                    learned_id = experience_pool.record_success(
+                        **pending_learning
+                    )
+                    learned = experience_pool.get(learned_id)
+                    result["experience_learned_ids"].append(learned_id)
+                    if learned is not None:
+                        result["experience_learned"].append(
+                            {
+                                "id": learned_id,
+                                "state": learned["state"],
+                                "version": learned["version"],
+                            }
+                        )
                 pending_learning = None
                 pending_experience_ids = []
             elif (
@@ -390,7 +420,13 @@ def run_one(
                 and not transient_tool_failure
                 and not model_rate_limited
             ):
-                experience_pool.feedback(pending_experience_ids, succeeded=False)
+                outcomes = experience_pool.feedback(
+                    pending_experience_ids, succeeded=False
+                )
+                result["experience_feedback"].extend(outcomes)
+                result["experience_transitions"].extend(
+                    item for item in outcomes if item["transitioned"]
+                )
                 pending_learning = None
                 pending_experience_ids = []
 
@@ -401,13 +437,16 @@ def run_one(
                 if experience_pool is not None:
                     retrieved_experiences = experience_pool.retrieve(
                         task_scope, current_failure_class or "execution_node",
-                        failing_node_type, graph_node_types, runtime_error_output, limit=2,
+                        failing_node_type, graph_node_types, runtime_error_output, limit=1,
                     )
                 pending_experience_ids = [item["id"] for item in retrieved_experiences]
                 result["experience_retrievals"].append({
                     "attempt": attempt,
                     "ids": pending_experience_ids,
                     "scores": [item["score"] for item in retrieved_experiences],
+                    "states": [item["state"] for item in retrieved_experiences],
+                    "versions": [item["version"] for item in retrieved_experiences],
+                    "reliabilities": [item["reliability"] for item in retrieved_experiences],
                 })
                 pending_learning = {
                     "task_scope": task_scope, "failure_class": current_failure_class or "execution_node",
@@ -429,7 +468,7 @@ def run_one(
                 }
             )
             if repair_scheduled:
-                inputs["repair_hint"] = render_repair_context(runtime_error_output, retrieved_experiences)
+                inputs["repair_hint"] = render_evolving_repair_context(runtime_error_output, retrieved_experiences)
             retryable = transient_tool_failure or model_rate_limited or directed_repair
             if not (retryable and attempt < 3):
                 break
@@ -576,7 +615,7 @@ def run_case_group(
     model_provider: str,
     model_name: str,
     thinking_mode: str,
-    experience_pool: RuntimeExperiencePool | None,
+    experience_pool: SelfEvolvingExperiencePool | None,
 ) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
     for arm, case, input_id, path, check in group:
@@ -606,11 +645,32 @@ def main_all3() -> None:
     parser.add_argument("--result-dir", required=True)
     parser.add_argument(
         "--experience-db",
-        help="SQLite path for task-scoped runtime repair experience.",
+        help="SQLite path for safe self-evolving runtime repair policies.",
+    )
+    parser.add_argument(
+        "--experience-promotion-successes",
+        type=int,
+        default=3,
+        help="Whole-graph successes required before a candidate can be used.",
+    )
+    parser.add_argument(
+        "--experience-promotion-reliability", type=float, default=0.40,
+    )
+    parser.add_argument(
+        "--experience-quarantine-failures",
+        type=int,
+        default=2,
+        help="Consecutive policy failures before automatic quarantine.",
     )
     args = parser.parse_args()
     experience_pool = (
-        RuntimeExperiencePool(args.experience_db)
+        SelfEvolvingExperiencePool(
+            args.experience_db,
+            promotion_min_successes=args.experience_promotion_successes,
+            promotion_min_reliability=args.experience_promotion_reliability,
+            quarantine_consecutive_failures=
+                args.experience_quarantine_failures,
+        )
         if args.experience_db
         else None
     )

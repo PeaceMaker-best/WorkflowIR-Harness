@@ -34,3 +34,12 @@ Publish two tables:
 - **Infrastructure-retried result**: only an explicitly identified infrastructure failure may be rerun on the same frozen input; the replacement key and original error class must be recorded.
 
 The infrastructure-retried table is an engineering availability result. The raw table remains the primary reproducibility result.
+
+## Self-evolution follow-up
+
+The frozen comparison above remains unchanged. A future v0.2 run must publish
+three phases separately: cold without a database, candidate shadow mode, and warm
+mode with promoted policies. It must additionally report promotion precision,
+quarantine count, repair attempts per successful workflow, and model repair calls
+avoided. Reusing the same trials to both promote a policy and report warm uplift
+must be disclosed; a held-out later input is preferred.
