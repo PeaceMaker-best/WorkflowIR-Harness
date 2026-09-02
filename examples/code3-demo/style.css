@@ -93,3 +93,6 @@ code { font-family: ui-monospace, Consolas, monospace; color: var(--yellow); }
 .boundary { border: 2px solid var(--yellow); background: #25200e; padding: 22px; line-height: 1.62; color: #f7edc5; }
 .boundary strong { color: var(--yellow); }
 footer { margin-top: 34px; border-top: 2px solid var(--line); padding-top: 18px; color: #818daa; font: 13px/1.6 ui-monospace, Consolas, monospace; }
+.native-page { padding-bottom: 90px; }
+.native-step { padding: 30px 30px 34px; }
+.native-shot { display: block; width: 100%; height: auto; border: 2px solid #536080; background: #090d19; box-shadow: 8px 8px 0 #050812; }

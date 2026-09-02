@@ -1,6 +1,6 @@
 # Code_3 end-to-end demo
 
-[![Code_3: generated DSL to stable Dify execution](screenshots/code3-complete-flow.png)](screenshots/code3-complete-flow.png)
+[![Code_3 actual Dify UI: Canvas, Logs, Result, and Tracing](screenshots/code3-native-dify-flow.png)](screenshots/code3-native-dify-flow.png)
 
 This example follows one complex, frozen workflow through the full engineering path:
 
@@ -9,19 +9,30 @@ requirement contract -> generated graph -> static validation -> Dify adapter
 -> import and publish -> three fixed executions -> output contract
 ~~~
 
-## What is real in the screenshot
+## Native Dify evidence
+
+- [Workflow Canvas](screenshots/native-dify/01-dify-canvas.png)
+- [Workflow Logs](screenshots/native-dify/02-dify-logs.png)
+- [Result Output](screenshots/native-dify/03-dify-run-detail.png)
+- [Node Tracing](screenshots/native-dify/04-dify-node-tracing.png)
+
+The four images were captured directly from the retained Dify application and successful run. They are not reconstructed product UI.
+
+## What is real in the complete flow
 
 - The graph is rendered from [Code_3.yaml](../harness/Code_3.yaml): 14 nodes, 16 directed edges, and three conditional routers.
 - The execution table is extracted from a captured Dify 1.9.2 run. The same frozen workflow passed test1, test2, and test3 with the required explanation and markdown outputs.
 - The node timing chart comes from the captured Dify node-execution trace.
 - The empty-edge failure is a controlled, reproducible injection against the committed graph. The validator reports EDGE_ENDPOINT_NOT_FOUND, then the original frozen skeleton passes endpoint validation.
 
-The public evidence is sanitized. It contains no source files, prompts, model responses, administrator cookies, API tokens, or raw traces.
+The visible Result belongs to a public benchmark input. The repository contains no API key, administrator password, browser cookie, unpublished source file, or raw trace JSON.
 
 ## Files
 
-- [Complete flow screenshot](screenshots/code3-complete-flow.png)
-- [Browser report](report.html)
+- [Actual Dify UI flow](screenshots/code3-native-dify-flow.png)
+- [Native flow page](native-flow.html)
+- [Engineering evidence replay](screenshots/code3-complete-flow.png)
+- [Replay report](report.html)
 - [Sanitized run ledger](evidence/run-summary.json)
 - [Graph failure proof](evidence/fault-injection.json)
 - [Evidence builder](build_demo.py)

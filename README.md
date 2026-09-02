@@ -8,9 +8,9 @@ WorkflowIR-Harness is a domain-specific generation and assurance pipeline for bo
 
 ## End-to-end executable demo
 
-[![Code_3 end-to-end evidence: requirement, graph, validation, Dify execution, and output contract](examples/code3-demo/screenshots/code3-complete-flow.png)](examples/code3-demo/README.md)
+[![Code_3 actual Dify UI: workflow canvas, logs, result, and node tracing](examples/code3-demo/screenshots/code3-native-dify-flow.png)](examples/code3-demo/README.md)
 
-The [Code_3 evidence replay](examples/code3-demo/README.md) follows one frozen 14-node, 16-edge workflow from requirement contract and graph validation through Dify import, publish, and three fixed functional inputs. All three captured executions reached End and satisfied the required output contract. The screenshot is rendered from committed YAML and a sanitized Dify trace summary; it is not an AI-generated run image.
+The [Code_3 executable demo](examples/code3-demo/README.md) follows one frozen 14-node, 16-edge workflow through the actual Dify Canvas, Workflow Logs, Result panel, and per-node Tracing view. The captured application is published, its selected run is marked SUCCESS, and the same frozen artifact passed all three fixed inputs.
 
 ## Selected case: 29.8% fewer generation tokens
 

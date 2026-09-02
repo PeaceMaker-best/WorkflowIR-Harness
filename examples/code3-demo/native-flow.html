@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Code_3 actual Dify UI flow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="page native-page">
+  <span class="eyebrow">Actual Dify UI · Code_3</span>
+  <h1>One workflow.<br>One successful execution.<br>Every runtime layer visible.</h1>
+  <p class="lead">Captured directly from the retained Dify 1.9.2 application and its successful run record. These are native product screenshots, not reconstructed UI.</p>
+  <div class="tags">
+    <span class="tag">APP REF 4b5948ab</span>
+    <span class="tag">RUN REF 000fc272</span>
+    <span class="tag">SUCCESS</span>
+    <span class="tag">9.947s · 425 TOKENS</span>
+  </div>
+
+  <section class="metrics">
+    <div class="metric"><b>14 / 16</b><span>nodes / directed edges</span></div>
+    <div class="metric"><b>3</b><span>conditional routers</span></div>
+    <div class="metric"><b>11</b><span>nodes executed on this branch</span></div>
+    <div class="metric"><b>3/3</b><span>fixed inputs passed</span></div>
+  </section>
+
+  <section class="step native-step">
+    <span class="step-no">01</span>
+    <h2>Workflow Canvas</h2>
+    <p class="sub">The imported and published Dify application. The canvas exposes Start, routing, extraction, code analysis, LLM, aggregation, artifact fallback, and End.</p>
+    <img class="native-shot" src="screenshots/native-dify/01-dify-canvas.png" alt="Actual Dify Code_3 workflow canvas">
+  </section>
+
+  <section class="step native-step">
+    <span class="step-no">02</span>
+    <h2>Workflow Logs</h2>
+    <p class="sub">The product log lists the captured execution as SUCCESS with its runtime, token count, start time, and test identity.</p>
+    <img class="native-shot" src="screenshots/native-dify/02-dify-logs.png" alt="Actual Dify workflow logs showing a successful Code_3 execution">
+  </section>
+
+  <section class="step native-step">
+    <span class="step-no">03</span>
+    <h2>Result Output</h2>
+    <p class="sub">The Log Detail panel exposes the real workflow result. This public benchmark input produced a source-code explanation and the required Markdown artifact output.</p>
+    <img class="native-shot" src="screenshots/native-dify/03-dify-run-detail.png" alt="Actual Dify run detail showing the Code_3 output">
+  </section>
+
+  <section class="step native-step">
+    <span class="step-no">04</span>
+    <h2>Node Tracing</h2>
+    <p class="sub">The same run exposes every selected node and its measured latency: routing, document extraction, code gate, LLM, aggregation, artifact fallback, and End.</p>
+    <img class="native-shot" src="screenshots/native-dify/04-dify-node-tracing.png" alt="Actual Dify tracing panel with per-node timing">
+  </section>
+
+  <section class="boundary">
+    <strong>Evidence boundary.</strong> The UI was captured from a retained successful application and run on the private evaluation server. The visible result belongs to a public benchmark input. No API key, administrator password, browser cookie, unpublished source file, or raw trace JSON is included.
+  </section>
+  <footer>Native capture: Dify 1.9.2 · app ref 4b5948ab · run ref 000fc272 · source ledger: examples/code3-demo/evidence/run-summary.json</footer>
+</main>
+</body>
+</html>
