@@ -35,3 +35,15 @@ A task-isolated store of verified repair policies and their lifecycle evidence. 
 ## Stable workflow
 
 One frozen workflow configuration that passes every fixed functional input assigned to it. A single successful execution is not a stable workflow.
+
+**Benchmark task**:
+One workflow requirement with a fixed functional-input set. It is counted once regardless of how many systems evaluate it.
+
+**Test instance**:
+One benchmark task paired with one fixed functional input. Sixteen tasks with three inputs produce 48 test instances.
+
+**System trial**:
+One system evaluating one test instance. Comparing two systems on 48 test instances produces 96 system trials.
+
+**Matched pair**:
+Two system trials that share the same benchmark task and functional input, enabling a like-for-like comparison.

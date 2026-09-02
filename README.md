@@ -60,20 +60,20 @@ The harness is deliberately removable:
 
 A simple employee lookup passed with 9,040 tokens through direct generation and 10,626 through staged generation. The complex Mermaid case favored the guarded path. This is why the project treats assurance as a profile, not as a mandatory pile of constraints. Automatic profile selection remains future work.
 
-## Stable workflows, not lucky samples
+## 48 matched test instances, 96 system trials — stable workflows, not lucky samples
 
 A workflow is **stable** only when the same frozen configuration passes all three fixed functional inputs. This is the primary engineering signal: one successful sample is not enough.
 
 ![Scoped evaluation: stable workflows and task success](assets/scoped-evaluation.svg)
 
-The paired study uses 16 public Chat2Workflow tasks with three fixed inputs each:
+The paired study evaluates **16 public Chat2Workflow tasks × 3 fixed inputs × 2 systems = 96 system trials**, organized as **48 matched pairs**. Task-level stability still requires one frozen workflow to pass all three inputs:
 
 | Method | Stable runtime workflows | Runtime acceptance | Stable semantic workflows | Semantic success |
 |---|---:|---:|---:|---:|
 | Official Agentic artifacts | 10/16 | 32/48 (66.7%) | 5/16 | 23/48 (47.9%) |
 | WorkflowIR-Harness | **15/16** | **45/48 (93.8%)** | **9/16** | **34/48 (70.8%)** |
 
-Across all 19 harness workflows, 18/19 passed all three runtime inputs and runtime acceptance was 54/57 (94.7%). The remaining three trials were retained as **StudyPlanner_3** timeouts.
+Across all 19 harness workflows, 18/19 passed all three runtime inputs; 54/57 harness system trials passed runtime acceptance (94.7%). The remaining three trials were retained as **StudyPlanner_3** timeouts.
 
 The tasks originate from the public [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow) benchmark, but this project intentionally uses a different engineering protocol. Runtime-visible import errors, node traces, and output-contract violations may guide bounded repair. Ground-truth workflows and judge answers are never exposed to generation or repair. See [Evaluation protocol](docs/EVALUATION.md) and [Claims and limitations](docs/CLAIMS_AND_LIMITATIONS.md).
 

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="430" viewBox="0 0 1200 430" role="img" aria-labelledby="title desc">
-  <title id="title">Stable workflow results on 16 paired benchmark tasks</title>
-  <desc id="desc">WorkflowIR-Harness had 15 of 16 stable runtime workflows compared with 10 of 16 official Agentic artifacts, and 9 of 16 stable semantic workflows compared with 5 of 16.</desc>
+  <title id="title">Stable workflow results across 96 system trials</title>
+  <desc id="desc">Sixteen benchmark tasks with three inputs and two systems form 48 matched pairs and 96 system trials. WorkflowIR-Harness had 15 of 16 stable runtime workflows compared with 10 of 16 official Agentic artifacts.</desc>
   <style>
     text { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
     .title { font-size: 22px; font-weight: 800; fill: #ffffff; }
@@ -11,7 +11,7 @@
   </style>
   <rect width="1200" height="430" fill="#0b1020"/>
   <text x="44" y="48" class="title">STABLE MEANS ONE FROZEN WORKFLOW PASSES ALL 3 INPUTS</text>
-  <text x="44" y="76" class="note">16 paired public Chat2Workflow tasks · scoped engineering protocol</text>
+  <text x="44" y="76" class="note">16 tasks × 3 fixed inputs × 2 systems = 48 matched pairs / 96 system trials</text>
 
   <text x="44" y="126" class="group">STABLE RUNTIME WORKFLOWS</text>
   <text x="44" y="168" class="value">OFFICIAL 10/16</text>

@@ -7,9 +7,10 @@ The workflow requirements and official Agentic comparison artifacts originate fr
 The expanded study contains:
 
 - 19 WorkflowIR-Harness workflows;
-- 16 workflows with paired official Agentic artifacts;
-- three fixed functional inputs per workflow;
-- 48 paired executions and 57 total harness executions.
+- 16 benchmark tasks with paired official Agentic artifacts;
+- three fixed functional inputs per task;
+- 48 matched input pairs and 96 system trials across the two compared systems;
+- 57 total WorkflowIR-Harness system trials across all 19 tasks.
 
 ## Why this is not the official benchmark protocol
 
