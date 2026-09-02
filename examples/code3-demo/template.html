@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Code_3 end-to-end evidence replay</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="page">
+  <span class="eyebrow">Executable evidence · Code_3</span>
+  <h1>From generated Dify DSL<br>to a stable, runnable workflow</h1>
+  <p class="lead">A sanitized, end-to-end replay of one frozen workflow across three fixed functional inputs. The graph comes from the committed YAML; run status, steps, and latency come from captured Dify node traces.</p>
+  <div class="tags">
+    <span class="tag">PUBLIC BENCHMARK TASK</span>
+    <span class="tag">DIFY 1.9.2</span>
+    <span class="tag">THINKING DISABLED</span>
+    <span class="tag">NO RAW USER CONTENT</span>
+  </div>
+
+  <section class="metrics">
+    <div class="metric"><b>{{EXEC_PASS}}/{{INPUTS}}</b><span>real executions passed</span></div>
+    <div class="metric"><b>{{CONTRACT_PASS}}/{{INPUTS}}</b><span>output contracts passed</span></div>
+    <div class="metric"><b>{{NODES}} / {{EDGES}}</b><span>nodes / directed edges</span></div>
+    <div class="metric"><b>{{MEAN_TIME}}s</b><span>mean end-to-end runtime</span></div>
+  </section>
+
+  <section class="step">
+    <span class="step-no">01</span>
+    <h2>Requirement contract</h2>
+    <p class="sub">The generator is not asked to write arbitrary platform JSON in one shot. Inputs, outputs, and branch obligations are fixed before binding.</p>
+    <div class="contract">
+      <div class="contract-card">
+        <h3>INPUT</h3>
+        <p><code>source_code: file</code><br><code>source_language: text</code></p>
+        <p>A source file plus the declared language.</p>
+      </div>
+      <div class="arrow">→</div>
+      <div class="contract-card">
+        <h3>OUTPUT</h3>
+        <p><code>explanation</code><br><code>markdown</code></p>
+        <p>Both keys must be present and non-empty. Markdown becomes a typed artifact descriptor when the optional exporter is unavailable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <span class="step-no">02</span>
+    <h2>Frozen workflow graph</h2>
+    <p class="sub">Fourteen nodes and sixteen edges, including three conditional routers. Only the selected branch executes for each input.</p>
+    <div class="workflow-wrap"><img src="graph.svg" alt="Code_3 graph rendered from the committed Dify YAML"></div>
+    <div class="legend">
+      <span><i class="start"></i>Start</span>
+      <span><i class="router"></i>Router</span>
+      <span><i class="llm"></i>LLM</span>
+      <span><i class="code-node"></i>Code</span>
+      <span><i class="end"></i>End</span>
+    </div>
+  </section>
+
+  <section class="step">
+    <span class="step-no">03</span>
+    <h2>Graph validator + bounded repair</h2>
+    <p class="sub">Controlled fault injection proves that an empty edge is detected before import. A graph-level issue rebuilds the topology skeleton instead of guessing one missing connection.</p>
+    <div class="validator-grid">
+      <div class="fault">
+        <h3>Injected failure</h3>
+        <p class="codebox">target: __missing_node__</p>
+        <p class="codebox">{{FAULT_CODE}}</p>
+      </div>
+      <div class="validator-arrow">→</div>
+      <div class="repair">
+        <h3>Post-repair validation</h3>
+        <p class="codebox">endpoint issues: {{POST_ISSUES}}</p>
+        <p class="codebox">status: PASS</p>
+      </div>
+    </div>
+    <p class="policy">Repair scope: Graph → rebuild or reload the skeleton · Binding → rebind the failed node · Execution → use the failing node trace, then rerun the entire workflow.</p>
+  </section>
+
+  <section class="step">
+    <span class="step-no">04</span>
+    <h2>Dify adapter + runtime execution</h2>
+    <p class="sub">Platform fields are added after the graph is stable. The adapter preserves task semantics while normalizing runtime-specific details.</p>
+    <div class="adapter-grid">
+      <div class="adapter-list">
+        <h3>Adapter actions</h3>
+        <ul>
+          <li>model binding normalized</li>
+          <li>language-agnostic analysis gate</li>
+          <li>plugin fallback → typed artifact</li>
+          <li>End output type alias verified</li>
+        </ul>
+      </div>
+      <div class="runtime-card">
+        <h3>Import and publish</h3>
+        <b>HTTP 200 → PUBLISHED</b>
+        <p>Each functional input ran through the Dify Workflow API. Temporary application API keys were deleted after each run.</p>
+        <p><code>model: {{MODEL}}</code><br><code>thinking: {{THINKING}}</code></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="step">
+    <span class="step-no">05</span>
+    <h2>Three-input execution evidence</h2>
+    <p class="sub">Stability means the same frozen workflow passes every fixed input—not that repeated sampling eventually gets lucky.</p>
+    <table>
+      <thead><tr><th>Input</th><th>Execution + contract</th><th>Steps</th><th>Elapsed</th><th>Output keys</th><th>Run ref</th></tr></thead>
+      <tbody>{{RUN_ROWS}}</tbody>
+    </table>
+    <div class="trace-grid">
+      <div class="timeline">
+        <h3>test1 · node trace timing</h3>
+        {{TIMELINE}}
+      </div>
+      <div class="proof">
+        <b>STABLE WORKFLOW</b>
+        <p>All three executions reached End and returned the required <code>explanation</code> and <code>markdown</code> outputs. No repair retry was needed in this captured run.</p>
+        <p>Raw prompts, source files, model responses, admin cookies, and API tokens are deliberately excluded.</p>
+      </div>
+    </div>
+    <div class="batch-strip">
+      <div><span>same 5-workflow comparison batch</span><b>Official {{OFFICIAL_PASS}}/{{OFFICIAL_TRIALS}}</b></div>
+      <strong>→</strong>
+      <div class="ours"><span>execution + output contract</span><b>Harness {{OURS_PASS}}/{{OURS_TRIALS}}</b></div>
+    </div>
+  </section>
+
+  <section class="boundary">
+    <strong>Claim boundary.</strong> This is a selected developer-set replay, not an official Chat2Workflow leaderboard score. The task comes from the public benchmark, but the protocol is engineering-oriented: visible import errors, Dify node traces, and output-contract failures may guide bounded repair. Ground-truth workflows and judge answers are not supplied to generation or repair.
+  </section>
+
+  <footer>
+    Evidence: examples/code3-demo/evidence/run-summary.json · Workflow: examples/harness/Code_3.yaml · Fault proof: examples/code3-demo/evidence/fault-injection.json · Screenshot rendered from committed artifacts, not AI-generated.
+  </footer>
+</main>
+</body>
+</html>

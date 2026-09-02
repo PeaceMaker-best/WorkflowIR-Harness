@@ -1,0 +1,26 @@
+{
+  "check": "edge endpoints must reference declared nodes",
+  "source_graph": {
+    "nodes": 14,
+    "edges": 16,
+    "issues": []
+  },
+  "controlled_fault": {
+    "edge_id": "1276254807205-source-1441069250121-target",
+    "original_target": "1441069250121",
+    "injected_target": "__missing_node__",
+    "issues": [
+      {
+        "code": "EDGE_ENDPOINT_NOT_FOUND",
+        "edge_id": "1276254807205-source-1441069250121-target",
+        "missing_node": "__missing_node__",
+        "message": "edge 1276254807205 -> __missing_node__ references a missing node"
+      }
+    ]
+  },
+  "repair_policy": "graph error -> discard broken topology and regenerate or reload the frozen graph skeleton",
+  "post_repair": {
+    "issues": [],
+    "status": "PASS"
+  }
+}

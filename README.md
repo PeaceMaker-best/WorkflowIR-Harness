@@ -6,6 +6,12 @@
 
 WorkflowIR-Harness is a domain-specific generation and assurance pipeline for bounded visual-workflow configuration. It explores a simple question: when the node catalog, schemas, graph rules, and execution contracts are known, do we still need a general-purpose coding agent?
 
+## End-to-end executable demo
+
+[![Code_3 end-to-end evidence: requirement, graph, validation, Dify execution, and output contract](examples/code3-demo/screenshots/code3-complete-flow.png)](examples/code3-demo/README.md)
+
+The [Code_3 evidence replay](examples/code3-demo/README.md) follows one frozen 14-node, 16-edge workflow from requirement contract and graph validation through Dify import, publish, and three fixed functional inputs. All three captured executions reached End and satisfied the required output contract. The screenshot is rendered from committed YAML and a sanitized Dify trace summary; it is not an AI-generated run image.
+
 ## Selected case: 29.8% fewer generation tokens
 
 On the same two-round **Mermaid_2** task, with the same model and thinking disabled:

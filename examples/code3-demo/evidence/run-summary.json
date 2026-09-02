@@ -1,0 +1,357 @@
+{
+  "schema_version": 1,
+  "provenance": {
+    "task": "Code_3",
+    "source": "public Chat2Workflow task; custom engineering execution protocol",
+    "evidence": "sanitized replay of a captured Dify execution trace",
+    "raw_trace_committed": false,
+    "user_content_committed": false,
+    "secrets_committed": false
+  },
+  "runtime": {
+    "platform": "Dify 1.9.2",
+    "model": "doubao-seed-evolving",
+    "thinking": "disabled",
+    "protocol": "custom final-state protocol: one frozen workflow and three fixed inputs",
+    "arm": "ours"
+  },
+  "requirement_contract": {
+    "inputs": [
+      {
+        "name": "source_code",
+        "type": "file"
+      },
+      {
+        "name": "source_language",
+        "type": "text"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "explanation",
+        "constraint": "non-empty source analysis"
+      },
+      {
+        "name": "markdown",
+        "constraint": "typed Markdown artifact descriptor"
+      }
+    ]
+  },
+  "workflow": {
+    "artifact": "examples/harness/Code_3.yaml",
+    "sha256": "23a1b8151ec181e314fbe05bd2f6be2d701589d1b833d6a03761906fc2fc03ce",
+    "nodes": 14,
+    "edges": 16,
+    "node_types": [
+      "code",
+      "document-extractor",
+      "end",
+      "if-else",
+      "llm",
+      "start",
+      "template-transform",
+      "tool",
+      "variable-aggregator"
+    ]
+  },
+  "aggregate": {
+    "fixed_inputs": 3,
+    "execution_pass": 3,
+    "output_contract_pass": 3,
+    "stable_workflow": true,
+    "mean_elapsed_seconds": 10.039
+  },
+  "runs": [
+    {
+      "input_id": "test1",
+      "status": "succeeded",
+      "execution_pass": true,
+      "output_contract_pass": true,
+      "elapsed_seconds": 9.948,
+      "executed_steps": 11,
+      "output_keys": [
+        "explanation",
+        "markdown"
+      ],
+      "matched_output_config": [
+        "explanation",
+        "markdown"
+      ],
+      "repair_attempts": 0,
+      "failure_class": null,
+      "run_ref": "000fc272",
+      "run_id_sha256": "8673518abfa582edab7d071a71c8c0d5ed45f8d299eb338a5784bf4ce47d6852",
+      "app_ref": "4b5948ab",
+      "app_id_sha256": "ada20fe2623d53ac5706f590b513dc32d1567c526d3faf4d700ad233bc05d2e3",
+      "recorded_at_utc": "2026-09-01T17:13:26+00:00",
+      "timeline": [
+        {
+          "title": "Start",
+          "type": "start",
+          "status": "succeeded",
+          "elapsed_seconds": 0.007
+        },
+        {
+          "title": "If-Else",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.033
+        },
+        {
+          "title": "If-Else 2",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.023
+        },
+        {
+          "title": "Document Extractor",
+          "type": "document-extractor",
+          "status": "succeeded",
+          "elapsed_seconds": 0.028
+        },
+        {
+          "title": "Code",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.048
+        },
+        {
+          "title": "If-Else 3",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.026
+        },
+        {
+          "title": "LLM",
+          "type": "llm",
+          "status": "succeeded",
+          "elapsed_seconds": 9.527
+        },
+        {
+          "title": "Template 3",
+          "type": "template-transform",
+          "status": "succeeded",
+          "elapsed_seconds": 0.109
+        },
+        {
+          "title": "Variable Aggregator",
+          "type": "variable-aggregator",
+          "status": "succeeded",
+          "elapsed_seconds": 0.026
+        },
+        {
+          "title": "Fallback: Markdown Artifact",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.047
+        },
+        {
+          "title": "End",
+          "type": "end",
+          "status": "succeeded",
+          "elapsed_seconds": 0.025
+        }
+      ]
+    },
+    {
+      "input_id": "test2",
+      "status": "succeeded",
+      "execution_pass": true,
+      "output_contract_pass": true,
+      "elapsed_seconds": 11.34,
+      "executed_steps": 11,
+      "output_keys": [
+        "explanation",
+        "markdown"
+      ],
+      "matched_output_config": [
+        "explanation",
+        "markdown"
+      ],
+      "repair_attempts": 0,
+      "failure_class": null,
+      "run_ref": "84463996",
+      "run_id_sha256": "eef6d777bdb8a4709c49a79d6216c18d63e88353cbfc0e617b714dba1acc6437",
+      "app_ref": "f899ab04",
+      "app_id_sha256": "9f33e42f01878e98863b8e57aa18687add4ea996837351b16b6a13ffe4d233aa",
+      "recorded_at_utc": "2026-09-01T17:13:30+00:00",
+      "timeline": [
+        {
+          "title": "Start",
+          "type": "start",
+          "status": "succeeded",
+          "elapsed_seconds": 0.047
+        },
+        {
+          "title": "If-Else",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.038
+        },
+        {
+          "title": "If-Else 2",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.031
+        },
+        {
+          "title": "Document Extractor",
+          "type": "document-extractor",
+          "status": "succeeded",
+          "elapsed_seconds": 0.03
+        },
+        {
+          "title": "Code",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.049
+        },
+        {
+          "title": "If-Else 3",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.037
+        },
+        {
+          "title": "LLM",
+          "type": "llm",
+          "status": "succeeded",
+          "elapsed_seconds": 10.807
+        },
+        {
+          "title": "Template 3",
+          "type": "template-transform",
+          "status": "succeeded",
+          "elapsed_seconds": 0.111
+        },
+        {
+          "title": "Variable Aggregator",
+          "type": "variable-aggregator",
+          "status": "succeeded",
+          "elapsed_seconds": 0.025
+        },
+        {
+          "title": "Fallback: Markdown Artifact",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.087
+        },
+        {
+          "title": "End",
+          "type": "end",
+          "status": "succeeded",
+          "elapsed_seconds": 0.03
+        }
+      ]
+    },
+    {
+      "input_id": "test3",
+      "status": "succeeded",
+      "execution_pass": true,
+      "output_contract_pass": true,
+      "elapsed_seconds": 8.828,
+      "executed_steps": 11,
+      "output_keys": [
+        "explanation",
+        "markdown"
+      ],
+      "matched_output_config": [
+        "explanation",
+        "markdown"
+      ],
+      "repair_attempts": 0,
+      "failure_class": null,
+      "run_ref": "8851e593",
+      "run_id_sha256": "b0149b74e74064ae4d4011596861f5756fab45e0bc5e7ab39d3b79ead5788eca",
+      "app_ref": "f5b1a298",
+      "app_id_sha256": "22711000e0443e3fea8b6efea80c816084efe91677d1d03490d0969eda2ad343",
+      "recorded_at_utc": "2026-09-01T17:13:31+00:00",
+      "timeline": [
+        {
+          "title": "Start",
+          "type": "start",
+          "status": "succeeded",
+          "elapsed_seconds": 0.009
+        },
+        {
+          "title": "If-Else",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.035
+        },
+        {
+          "title": "If-Else 2",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.031
+        },
+        {
+          "title": "Document Extractor",
+          "type": "document-extractor",
+          "status": "succeeded",
+          "elapsed_seconds": 0.029
+        },
+        {
+          "title": "Code",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.094
+        },
+        {
+          "title": "If-Else 3",
+          "type": "if-else",
+          "status": "succeeded",
+          "elapsed_seconds": 0.04
+        },
+        {
+          "title": "LLM",
+          "type": "llm",
+          "status": "succeeded",
+          "elapsed_seconds": 8.321
+        },
+        {
+          "title": "Template 3",
+          "type": "template-transform",
+          "status": "succeeded",
+          "elapsed_seconds": 0.108
+        },
+        {
+          "title": "Variable Aggregator",
+          "type": "variable-aggregator",
+          "status": "succeeded",
+          "elapsed_seconds": 0.024
+        },
+        {
+          "title": "Fallback: Markdown Artifact",
+          "type": "code",
+          "status": "succeeded",
+          "elapsed_seconds": 0.056
+        },
+        {
+          "title": "End",
+          "type": "end",
+          "status": "succeeded",
+          "elapsed_seconds": 0.029
+        }
+      ]
+    }
+  ],
+  "batch_context": {
+    "official": {
+      "workflows": 5,
+      "trials": 15,
+      "execution_pass": 12,
+      "output_contract_pass": 9,
+      "resolve_proxy": 9,
+      "three_input_task_pass": 3
+    },
+    "ours": {
+      "workflows": 5,
+      "trials": 15,
+      "execution_pass": 14,
+      "output_contract_pass": 14,
+      "resolve_proxy": 14,
+      "three_input_task_pass": 4
+    }
+  }
+}
