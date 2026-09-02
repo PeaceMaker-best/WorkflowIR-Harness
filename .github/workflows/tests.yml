@@ -16,6 +16,7 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install -r requirements.txt
+      - run: PYTHONPATH=src python tests/pipeline_selftest.py
       - run: PYTHONPATH=src python tests/offline_selftest.py
       - run: PYTHONPATH=src python tests/experience_pool_selftest.py
       - run: PYTHONPATH=src python tests/self_evolving_pool_selftest.py

@@ -1,11 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it using the metadata below."
-title: "WorkflowIR-Harness: Contract-Guided Generation, Runtime Repair, and Safe Self-Evolution"
+title: "WorkflowIR-Harness: Domain-Specific Workflow Generation and Progressive Assurance"
 type: software
-version: 0.2.0
+version: 0.4.0
 date-released: 2026-09-02
 authors:
   - family-names: "Hu"
     given-names: "Yang"
+repository-code: "https://github.com/PeaceMaker-best/WorkflowIR-Harness"
 abstract: >-
-  An executable, auditable harness for validating workflows and evolving verified runtime repair policies on Dify.
+  A contract-guided workflow generator and execution harness with bounded context,
+  typed repair, stable-workflow evaluation, and evidence-gated repair memory.

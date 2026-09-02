@@ -1,5 +1,15 @@
 # Changelog
 
+## v0.4.0 — 2026-09-02
+
+- Reframed the project around domain-specific generation and stable executable workflows.
+- Added provider-independent direct, staged, guarded, and adaptive pipeline profiles.
+- Added call-level prompt, completion, reasoning, cache-read, and processed-token accounting.
+- Added the selected Mermaid_2 token and semantic-success case study.
+- Promoted stable three-input workflow success to the primary engineering metric.
+- Added explicit benchmark-origin, data-boundary, and non-leaderboard disclosures.
+- Added English and Chinese READMEs plus pixel-style architecture and result diagrams.
+
 ## v0.3.0 — 2026-09-02
 
 - Expanded the custom runtime study to 19 harness workflows and 57 fixed-input trials.
@@ -22,8 +32,7 @@ The expanded run keeps the experience pool disabled. No self-evolving uplift is 
 - Integrated configurable self-evolution gates into the Dify runner.
 - Added migration and deterministic lifecycle regressions.
 
-The v0.2 lifecycle is validated offline. No online success-rate uplift is claimed
-until a new cold/candidate/warm execution experiment is completed.
+The v0.2 lifecycle is validated offline. No online success-rate uplift is claimed until a new cold/candidate/warm execution experiment is completed.
 
 ## v0.1.0 — 2026-09-02
 

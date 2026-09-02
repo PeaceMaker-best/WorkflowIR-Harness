@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "workflowir-harness"
+version = "0.4.0"
+description = "Contract-guided generation and progressive assurance for executable workflows"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "Yang Hu" }]
+dependencies = [
+  "numpy>=1.24,<3",
+  "openai>=2.16,<3",
+  "PyYAML>=6.0",
+  "requests>=2.31,<3",
+  "scikit-learn>=1.3,<2",
+]
+
+[project.urls]
+Repository = "https://github.com/PeaceMaker-best/WorkflowIR-Harness"
+Issues = "https://github.com/PeaceMaker-best/WorkflowIR-Harness/issues"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["workflowir_harness*"]

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="310" viewBox="0 0 1200 310" role="img" aria-labelledby="title desc">
+  <title id="title">Contract-guided workflow generation pipeline</title>
+  <desc id="desc">Conversation is rewritten into a requirement contract, used to retrieve candidate nodes, plan a graph, bind parameters into Workflow IR, validate, and execute on Dify.</desc>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .title { font-size: 22px; font-weight: 800; fill: #ffffff; }
+    .stage { font-size: 16px; font-weight: 800; fill: #0b1020; }
+    .note { font-size: 14px; fill: #b7c6df; }
+  </style>
+  <rect width="1200" height="310" fill="#0b1020"/>
+  <text x="44" y="48" class="title">BOUNDED CONTEXT PIPELINE</text>
+  <text x="44" y="76" class="note">Full schemas appear only after candidate selection.</text>
+
+  <g shape-rendering="crispEdges">
+    <rect x="44" y="116" width="136" height="70" fill="#22d3ee"/>
+    <rect x="206" y="116" width="136" height="70" fill="#fbbf24"/>
+    <rect x="368" y="116" width="136" height="70" fill="#a78bfa"/>
+    <rect x="530" y="116" width="136" height="70" fill="#fb7185"/>
+    <rect x="692" y="116" width="136" height="70" fill="#34d399"/>
+    <rect x="854" y="116" width="136" height="70" fill="#60a5fa"/>
+    <rect x="1016" y="116" width="140" height="70" fill="#5eead4"/>
+    <path d="M180 151H206M342 151H368M504 151H530M666 151H692M828 151H854M990 151H1016" stroke="#d9e7ff" stroke-width="6"/>
+  </g>
+
+  <text x="70" y="158" class="stage">REWRITE</text>
+  <text x="231" y="158" class="stage">RETRIEVE</text>
+  <text x="405" y="158" class="stage">GRAPH</text>
+  <text x="574" y="158" class="stage">BIND</text>
+  <text x="718" y="158" class="stage">IR</text>
+  <text x="881" y="158" class="stage">VALIDATE</text>
+  <text x="1051" y="158" class="stage">EXECUTE</text>
+
+  <text x="47" y="224" class="note">dialog → contract</text>
+  <text x="210" y="224" class="note">summaries → schemas</text>
+  <text x="371" y="224" class="note">nodes + edges</text>
+  <text x="533" y="224" class="note">variables + params</text>
+  <text x="695" y="224" class="note">platform neutral</text>
+  <text x="857" y="224" class="note">typed evidence</text>
+  <text x="1019" y="224" class="note">Dify + contracts</text>
+
+  <path d="M922 246V276H599V246" stroke="#fb7185" stroke-width="4" fill="none"/>
+  <rect x="704" y="258" width="118" height="34" fill="#fb7185"/>
+  <text x="721" y="281" class="stage">REPAIR</text>
+</svg>

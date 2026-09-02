@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="470" viewBox="0 0 1200 470" role="img" aria-labelledby="title desc">
+  <title id="title">OpenCode Agentic and WorkflowIR-Harness selected-case comparison</title>
+  <desc id="desc">On Mermaid_2, WorkflowIR-Harness used 24,877 generation tokens and passed three of three semantic tests. OpenCode Agentic used 35,457 tokens and passed zero of three semantic tests.</desc>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .label { font-size: 18px; font-weight: 700; fill: #d9e7ff; }
+    .small { font-size: 15px; fill: #9fb0cc; }
+    .value { font-size: 38px; font-weight: 800; fill: #ffffff; }
+    .metric { font-size: 17px; font-weight: 700; fill: #0b1020; }
+  </style>
+  <rect width="1200" height="470" fill="#0b1020"/>
+  <rect x="0" y="0" width="1200" height="12" fill="#5eead4"/>
+  <rect x="36" y="34" width="12" height="12" fill="#fbbf24"/>
+  <rect x="56" y="34" width="12" height="12" fill="#fb7185"/>
+  <rect x="76" y="34" width="12" height="12" fill="#a78bfa"/>
+  <text x="108" y="48" class="small">SELECTED CASE · MERMAID_2 · SAME MODEL · THINKING OFF</text>
+
+  <rect x="46" y="86" width="508" height="320" fill="#141d33"/>
+  <rect x="46" y="86" width="508" height="8" fill="#fb7185"/>
+  <text x="78" y="132" class="label">OPENCODE AGENTIC</text>
+  <rect x="78" y="164" width="116" height="54" fill="#334155"/>
+  <rect x="212" y="164" width="116" height="54" fill="#334155"/>
+  <rect x="346" y="164" width="116" height="54" fill="#334155"/>
+  <text x="99" y="197" class="small">SKILL</text>
+  <text x="239" y="197" class="small">TOOLS</text>
+  <text x="364" y="197" class="small">HISTORY</text>
+  <path d="M194 191H212M328 191H346M462 191H494V250" stroke="#fb7185" stroke-width="6" fill="none"/>
+  <rect x="78" y="250" width="416" height="80" fill="#25324d"/>
+  <text x="102" y="282" class="small">GENERATION TOKENS</text>
+  <text x="102" y="318" class="value">35,457</text>
+  <rect x="78" y="350" width="172" height="36" fill="#fb7185"/>
+  <text x="99" y="374" class="metric">SEMANTIC 0/3</text>
+
+  <rect x="646" y="86" width="508" height="320" fill="#141d33"/>
+  <rect x="646" y="86" width="508" height="8" fill="#5eead4"/>
+  <text x="678" y="132" class="label">WORKFLOWIR-HARNESS</text>
+  <rect x="678" y="164" width="90" height="54" fill="#22d3ee"/>
+  <rect x="786" y="164" width="90" height="54" fill="#a78bfa"/>
+  <rect x="894" y="164" width="90" height="54" fill="#fbbf24"/>
+  <rect x="1002" y="164" width="90" height="54" fill="#34d399"/>
+  <text x="690" y="197" class="metric">REWRITE</text>
+  <text x="807" y="197" class="metric">GRAPH</text>
+  <text x="918" y="197" class="metric">BIND</text>
+  <text x="1020" y="197" class="metric">CHECK</text>
+  <path d="M768 191H786M876 191H894M984 191H1002M1092 191H1122V250" stroke="#5eead4" stroke-width="6" fill="none"/>
+  <rect x="678" y="250" width="444" height="80" fill="#25324d"/>
+  <text x="702" y="282" class="small">GENERATION TOKENS · −29.8%</text>
+  <text x="702" y="318" class="value">24,877</text>
+  <rect x="678" y="350" width="172" height="36" fill="#5eead4"/>
+  <text x="699" y="374" class="metric">SEMANTIC 3/3</text>
+  <text x="46" y="446" class="small">More calls, smaller contexts, a stable output contract. This is a case study—not an aggregate token claim.</text>
+</svg>

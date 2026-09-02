@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="390" viewBox="0 0 1200 390" role="img" aria-labelledby="title desc">
+  <title id="title">Progressive assurance profiles</title>
+  <desc id="desc">Direct mode uses one-shot generation. Staged mode adds rewrite, retrieval, graph and binding stages. Guarded mode adds validation and repair. Adaptive mode adds verified repair memory.</desc>
+  <style>
+    text { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+    .title { font-size: 22px; font-weight: 800; fill: #ffffff; }
+    .name { font-size: 19px; font-weight: 800; fill: #0b1020; }
+    .note { font-size: 14px; fill: #b7c6df; }
+    .chip { font-size: 13px; font-weight: 700; fill: #d9e7ff; }
+  </style>
+  <rect width="1200" height="390" fill="#0b1020"/>
+  <text x="44" y="48" class="title">ASSURANCE YOU CAN PUT ON—or TAKE OFF</text>
+  <text x="44" y="76" class="note">Profiles expose the cost-risk trade-off instead of forcing every task through maximum machinery.</text>
+
+  <rect x="44" y="112" width="252" height="210" fill="#141d33"/>
+  <rect x="44" y="112" width="252" height="58" fill="#22d3ee"/>
+  <text x="68" y="148" class="name">DIRECT</text>
+  <rect x="68" y="198" width="96" height="34" fill="#25324d"/>
+  <text x="83" y="221" class="chip">ONE SHOT</text>
+  <text x="68" y="270" class="note">Small linear tasks</text>
+  <text x="68" y="294" class="note">Lowest overhead</text>
+
+  <rect x="322" y="112" width="252" height="210" fill="#141d33"/>
+  <rect x="322" y="112" width="252" height="58" fill="#fbbf24"/>
+  <text x="346" y="148" class="name">STAGED</text>
+  <rect x="346" y="190" width="76" height="30" fill="#25324d"/>
+  <rect x="434" y="190" width="62" height="30" fill="#25324d"/>
+  <rect x="508" y="190" width="42" height="30" fill="#25324d"/>
+  <text x="357" y="211" class="chip">REWRITE</text>
+  <text x="444" y="211" class="chip">GRAPH</text>
+  <text x="517" y="211" class="chip">BIND</text>
+  <text x="346" y="270" class="note">Bounded contexts</text>
+  <text x="346" y="294" class="note">No model repair</text>
+
+  <rect x="600" y="112" width="252" height="210" fill="#141d33"/>
+  <rect x="600" y="112" width="252" height="58" fill="#fb7185"/>
+  <text x="624" y="148" class="name">GUARDED</text>
+  <rect x="624" y="190" width="88" height="30" fill="#25324d"/>
+  <rect x="724" y="190" width="104" height="30" fill="#25324d"/>
+  <text x="634" y="211" class="chip">VALIDATE</text>
+  <text x="737" y="211" class="chip">REPAIR ≤2</text>
+  <text x="624" y="270" class="note">Branches + contracts</text>
+  <text x="624" y="294" class="note">Full rerun required</text>
+
+  <rect x="878" y="112" width="278" height="210" fill="#141d33"/>
+  <rect x="878" y="112" width="278" height="58" fill="#34d399"/>
+  <text x="902" y="148" class="name">ADAPTIVE</text>
+  <rect x="902" y="190" width="104" height="30" fill="#25324d"/>
+  <rect x="1018" y="190" width="114" height="30" fill="#25324d"/>
+  <text x="915" y="211" class="chip">GUARDED</text>
+  <text x="1029" y="211" class="chip">MEMORY</text>
+  <text x="902" y="270" class="note">Verified policies only</text>
+  <text x="902" y="294" class="note">Promote or quarantine</text>
+
+  <path d="M170 344H1017" stroke="#5eead4" stroke-width="6"/>
+  <rect x="158" y="336" width="18" height="18" fill="#5eead4"/>
+  <rect x="1008" y="336" width="18" height="18" fill="#5eead4"/>
+  <text x="442" y="374" class="note">MORE ASSURANCE · MORE COST · LOWER UNCONTROLLED RISK</text>
+</svg>

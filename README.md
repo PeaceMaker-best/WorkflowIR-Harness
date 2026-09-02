@@ -1,154 +1,149 @@
-# WorkflowIR-Harness: Contract-Guided Generation, Runtime Repair, and Safe Self-Evolution
+# WorkflowIR-Harness
 
-This package turns generated workflow configurations into an auditable execution experiment instead of judging them by JSON equality.
+![WorkflowIR-Harness: less context, more stable workflows](assets/hero-opencode-vs-workflowir.svg)
 
-## Abstract
+**Less context. More stable workflows.**
 
-WorkflowIR-Harness converts natural-language workflow generation from a JSON imitation task into an executable, auditable pipeline. It separates requirement semantics, graph structure, parameter binding, platform adaptation, runtime repair, and evidence-gated policy evolution, then evaluates whether a generated workflow can actually complete fixed functional inputs on Dify.
+WorkflowIR-Harness is a domain-specific generation and assurance pipeline for bounded visual-workflow configuration. It explores a simple question: when the node catalog, schemas, graph rules, and execution contracts are known, do we still need a general-purpose coding agent?
 
-## Contributions
+## Selected case: 29.8% fewer generation tokens
 
-- Requirement-contract repair and deterministic graph validation before platform import.
-- A Dify adapter that keeps platform compatibility changes separate from workflow semantics.
-- Trace-guided node repair with at most two retries; topology failures remain full-regeneration events.
-- A task-isolated repair memory with candidate promotion, version lineage, automatic quarantine, and secret-safe audit events.
-- Deterministic contracts for delimited chart parameters, multi-file uploads, and bounded Iteration fan-out.
-- Incremental execution that reuses successful trial keys and supports sample-level parallelism when runtime memory is disabled.
+On the same two-round **Mermaid_2** task, with the same model and thinking disabled:
 
-## Frozen developer result
-
-| Arm | Execution | Output contract | Semantic task | Stable workflows |
+| Method | Generation tokens | Model calls | Dify execution | Semantic success |
 |---|---:|---:|---:|---:|
-| Official agentic artifacts | 12/15 | 9/15 | 8/15 (53.3%) | 2/5 |
-| WorkflowIR-Harness | 14/15 | 14/15 | 14/15 (93.3%) | 4/5 |
+| OpenCode Agentic | 35,457 | 2 | 3/3 | 0/3 |
+| WorkflowIR-Harness | **24,877** | 5 | 3/3 | **3/3** |
 
-The scoped evaluation contains five Developer workflows and three fixed inputs per workflow. The single remaining harness failure was an audited Dify plugin-database capacity error; an exact infrastructure-only retry passed. This is a developer subset result, not a blind or full leaderboard claim.
+WorkflowIR-Harness processed **29.8% fewer generation tokens despite making more model calls**. The difference came from smaller stage-specific contexts and an explicit output contract. The OpenCode artifact executed, but mixed the knowledge summary with Mermaid source instead of returning clean **summary** and **mermaid_code** outputs.
 
-## Expanded runtime result
+> This is a selected, same-task engineering case study—not an aggregate token claim or an official leaderboard result. See the [full trace and accounting](docs/CASE_STUDY_MERMAID2.md).
 
-The incremental study covers 19 harness workflows and 57 fixed-input executions. Official artifacts exist for 16 workflows, which form the paired comparison below.
+## Why a specialized generator?
 
-| Arm | Runtime acceptance | Stable runtime workflows | Semantic success | Stable semantic workflows |
+General coding agents are built for an open action space: files, shell commands, dependency discovery, and arbitrary edits. A workflow configuration has a narrower structure:
+
+- a bounded node catalog;
+- typed node schemas;
+- explicit graph and variable-reference rules;
+- a platform adapter;
+- observable import errors, node traces, and output contracts.
+
+WorkflowIR-Harness uses those boundaries directly. It does not claim that coding agents are unnecessary for open-ended software work; it tests whether they are unnecessary overhead for this class of configuration task.
+
+![Contract-guided staged generation pipeline](assets/pipeline-pixel.svg)
+
+## Method
+
+The generator separates five responsibilities:
+
+1. **Rewrite** compresses conversation history into a confirmed requirement contract.
+2. **Retrieve** selects candidate nodes from summaries and discloses full schemas only when binding.
+3. **Graph** plans nodes, edges, branches, and merge structure without platform serialization noise.
+4. **Bind** resolves variables and node parameters into Workflow IR.
+5. **Validate** classifies failures and chooses the smallest safe repair scope.
+
+Graph failures trigger topology regeneration. Binding failures rebind the affected node. Runtime failures use the failing node trace. Every repair is followed by a complete workflow rerun; infrastructure failures are recorded separately rather than blamed on generation.
+
+## Progressive assurance
+
+![Direct, staged, guarded, and adaptive assurance profiles](assets/assurance-profiles.svg)
+
+The harness is deliberately removable:
+
+| Profile | Intended use | Enabled path |
+|---|---|---|
+| **direct** | Small linear configurations | One-shot generation |
+| **staged** | Moderate configurations | Rewrite → Retrieve → Graph → Bind |
+| **guarded** | Branching or contract-heavy workflows | Staged generation + typed validation and repair |
+| **adaptive** | Repeated task families | Guarded path + evidence-gated repair memory |
+
+A simple employee lookup passed with 9,040 tokens through direct generation and 10,626 through staged generation. The complex Mermaid case favored the guarded path. This is why the project treats assurance as a profile, not as a mandatory pile of constraints. Automatic profile selection remains future work.
+
+## Stable workflows, not lucky samples
+
+A workflow is **stable** only when the same frozen configuration passes all three fixed functional inputs. This is the primary engineering signal: one successful sample is not enough.
+
+![Scoped evaluation: stable workflows and task success](assets/scoped-evaluation.svg)
+
+The paired study uses 16 public Chat2Workflow tasks with three fixed inputs each:
+
+| Method | Stable runtime workflows | Runtime acceptance | Stable semantic workflows | Semantic success |
 |---|---:|---:|---:|---:|
-| Official agentic artifacts | 32/48 (66.7%) | 10/16 | 23/48 (47.9%) | 5/16 |
-| WorkflowIR-Harness | 45/48 (93.8%) | 15/16 | 34/48 (70.8%) | 9/16 |
+| Official Agentic artifacts | 10/16 | 32/48 (66.7%) | 5/16 | 23/48 (47.9%) |
+| WorkflowIR-Harness | **15/16** | **45/48 (93.8%)** | **9/16** | **34/48 (70.8%)** |
 
-Across all 19 harness workflows, runtime acceptance is 54/57 (94.7%) and 18/19 workflows pass all three inputs. The remaining three trials are retained as `StudyPlanner_3` timeouts.
+Across all 19 harness workflows, 18/19 passed all three runtime inputs and runtime acceptance was 54/57 (94.7%). The remaining three trials were retained as **StudyPlanner_3** timeouts.
 
-See `docs/EXPANDED_RUNTIME_EVAL.md` for protocol, adapter repairs, full-denominator metrics, and claim boundaries.
+The tasks originate from the public [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow) benchmark, but this project intentionally uses a different engineering protocol. Runtime-visible import errors, node traces, and output-contract violations may guide bounded repair. Ground-truth workflows and judge answers are never exposed to generation or repair. See [Evaluation protocol](docs/EVALUATION.md) and [Claims and limitations](docs/CLAIMS_AND_LIMITATIONS.md).
 
+## Failure is evidence, not another lottery ticket
 
-## Pipeline
+The engineering loop is:
 
-`Requirement contract -> adapter -> execute -> contract check -> typed repair -> full rerun -> candidate evidence -> promote/quarantine`
+~~~text
+generate → validate → execute → classify → bounded repair → full rerun
+~~~
 
-The core design separates:
+It does not repeatedly sample until one workflow happens to pass. A failed attempt must produce a typed issue and an auditable next action. The optional experience pool stores verified repair policies—not task answers—and promotes a policy only after whole-workflow success.
 
-- requirement semantics from platform configuration;
-- graph, binding, execution, and infrastructure failures;
-- task repair retries from infrastructure retries;
-- native output artifacts from degraded compatibility descriptors.
+## Package layout
 
-## Reproduce the frozen five-case report
+~~~text
+src/workflowir_harness/
+├── domain.py       # requirement, workflow, issue, and outcome types
+├── profiles.py     # direct / staged / guarded / adaptive modes
+├── telemetry.py    # call-level and success-normalized token accounting
+└── pipeline.py     # provider-independent staged orchestration
 
-```bash
-PYTHONPATH=src python src/make_scoped_report.py \
-  --result /path/to/raw/result.json \
-  --semantic /path/to/raw/semantic.json \
-  --output-dir /path/to/report_raw
-```
+src/                # existing Dify adapter, validators, runner, and repair memory
+tests/              # offline, runtime-policy, and pipeline self-tests
+docs/               # method, case study, evaluation, and claim boundaries
+~~~
 
-For an audited infrastructure retry, also pass `--replacement-result` and `--replacement-semantic`. The script only replaces a base trial when its error matches a known infrastructure marker and the same arm/case/input succeeds semantically in the replacement run.
-
-See:
-
-- `docs/EXPERIMENT_PROTOCOL.md` for metric definitions.
-- `docs/BAD_CASES_AND_REPAIRS.md` for failure-driven upgrades.
-- `docs/SCOPED_DEVELOPER_EVAL_RAW.md` for the primary result.
-- `docs/SCOPED_DEVELOPER_EVAL_INFRA_RETRIED.md` for the availability-adjusted result.
-
-## Claim boundary
-
-The frozen Developer table covers five workflows and remains unchanged. The expanded study covers 19 harness workflows, with 16 paired official artifacts. Both support scoped engineering claims, not a full Chat2Workflow leaderboard claim.
-
-The frozen result predates the self-evolving policy layer; no online uplift from that layer is claimed yet.
-
-## Runtime experience pool
-
-The pool is a repair memory, not an answer cache. A policy is written only after a failed node is repaired and the complete workflow passes again. New policies remain shadow-only candidates until repeated whole-graph success promotes them to active use; two consecutive policy failures trigger quarantine.
-
-
-Stored fields:
-
-- exact task scope and failure class;
-- failing node type and graph node-type signature;
-- normalized, redacted error tokens;
-- versioned generic repair policy, lifecycle state, lineage, counters, and timestamps;
-- append-only promotion and quarantine events.
-
-Only active policies can enter a repair prompt. Candidate and quarantined policies remain available for offline analysis and audit.
-
-Retrieval gates:
-
-- exact task scope;
-- exact failure class;
-- compatible node type;
-- minimum error-token and graph-signature similarity;
-- 90-day TTL and per-task retention cap.
-
-Raw user input, model output, answer text, API keys, URLs, emails, and full traces are never stored. Inputs for one task run sequentially so earlier verified repairs can warm later inputs, while different tasks still run in parallel.
+The new package is intentionally thin and provider-independent. Existing experiment scripts remain available while they are migrated behind stable interfaces.
 
 ## Quick start
 
-```bash
+~~~bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+
+PYTHONPATH=src python tests/pipeline_selftest.py
+PYTHONPATH=src python tests/offline_selftest.py
 PYTHONPATH=src python tests/experience_pool_selftest.py
-PYTHONPATH=src python tests/self_evolving_pool_selftest.py
-```
+~~~
 
-To run the frozen three-input execution harness, point it at a Dify installation and a Chat2Workflow-compatible check file:
+To run the Dify execution harness, provide a private admin environment file and the upstream evaluation assets:
 
-```bash
+~~~bash
 export DIFY_ADMIN_FILE=/secure/path/dify_admin.env
 export BENCH_CHECK_FILE=/path/to/check_pass_stage.json
 export BENCH_CASE_FILES=/path/to/case_files
-PYTHONPATH=src python src/run_dify_all3.py --arm staged --workers 5 --experience-db results/repair_memory.sqlite --result-dir results/run
-```
 
-`--experience-db` enables safe self-evolution with default promotion and quarantine gates. Without it, the runner performs trace-guided repair but does not persist repair experience.
-
-For a cold incremental run, successful trial keys can be reused and independent inputs can run concurrently:
-
-```bash
 PYTHONPATH=src python src/run_dify_all3.py \
   --arm staged \
-  --workers 12 \
-  --sample-parallel \
-  --resume-from results/previous/result.json \
-  --result-dir results/incremental
-```
+  --workers 5 \
+  --result-dir results/run
+~~~
 
-`--sample-parallel` is intentionally incompatible with `--experience-db`, because warm repair evidence must preserve per-task input order.
+Secrets, raw traces, user content, and local absolute paths are excluded from the repository.
 
 ## Reproducibility
 
-- [Experiment protocol](docs/EXPERIMENT_PROTOCOL.md)
-- [Raw frozen result](docs/SCOPED_DEVELOPER_EVAL_RAW.md)
-- [Infrastructure-retried result](docs/SCOPED_DEVELOPER_EVAL_INFRA_RETRIED.md)
+- [Mermaid_2 case study](docs/CASE_STUDY_MERMAID2.md)
+- [Scoped evaluation protocol](docs/EVALUATION.md)
+- [Claims and limitations](docs/CLAIMS_AND_LIMITATIONS.md)
+- [Expanded runtime evaluation](docs/EXPANDED_RUNTIME_EVAL.md)
 - [Bad cases and repair decisions](docs/BAD_CASES_AND_REPAIRS.md)
 - [Runtime experience pool](docs/RUNTIME_EXPERIENCE_POOL.md)
-- [Safe self-evolution](docs/SELF_EVOLUTION.md)
-- [Expanded runtime evaluation](docs/EXPANDED_RUNTIME_EVAL.md)
-- [Expanded aggregate metrics](docs/expanded_metrics.json)
-- [Expanded compact trial ledger](docs/expanded_trials.json)
+- [Compact trial ledger](docs/expanded_trials.json)
 
 ## Acknowledgement
 
-The example tasks, node catalog fixture, and official comparison artifacts originate from [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow): *A Benchmark for Generating Executable Visual Workflows with Natural Language*. WorkflowIR-Harness is an independent engineering extension and does not claim affiliation with the benchmark authors.
+The public tasks, node-catalog fixture, and official comparison artifacts originate from [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow), *A Benchmark for Generating Executable Visual Workflows with Natural Language*. WorkflowIR-Harness is an independent engineering extension and is not affiliated with the benchmark authors.
 
 ## License
 
-MIT. Upstream benchmark assets retain their original notice in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
-
+MIT. Upstream assets retain their original notices in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
