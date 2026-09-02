@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Offline regression tests for the task-scoped runtime experience pool."""
 from concurrent.futures import ThreadPoolExecutor
+from contextlib import closing
 import sqlite3
 from tempfile import TemporaryDirectory
 from pathlib import Path
@@ -71,7 +72,7 @@ def main() -> None:
         }) == "code"
         raw = path.read_bytes()
         assert b"sk-example-secret-value" not in raw
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db:
             columns = {
                 row[1] for row in db.execute("PRAGMA table_info(experiences)")
             }

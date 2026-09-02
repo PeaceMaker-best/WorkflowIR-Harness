@@ -668,7 +668,8 @@ def partition_jobs_for_resume(
         prior = previous.get((job[0], job[1], job[2]))
         if prior and prior.get("resolve_proxy"):
             item = dict(prior)
-            item["reused_from"] = str(source)
+            # Persist a platform-independent provenance path in JSON reports.
+            item["reused_from"] = source.as_posix()
             reused.append(item)
         else:
             pending.append(job)

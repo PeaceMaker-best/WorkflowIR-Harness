@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Task-scoped runtime repair memory with no answer or raw-trace storage."""
 from __future__ import annotations
+from contextlib import contextmanager
 from datetime import datetime, timedelta, timezone
 import hashlib
 import json
@@ -109,12 +110,20 @@ class RuntimeExperiencePool:
             CREATE INDEX IF NOT EXISTS idx_scope ON experiences(task_scope, failure_class, node_type, updated_at);
             """)
 
-    def connect(self) -> sqlite3.Connection:
+    @contextmanager
+    def connect(self):
         db = sqlite3.connect(self.path, timeout=30)
-        db.row_factory = sqlite3.Row
-        db.execute("PRAGMA busy_timeout=30000")
-        db.execute("PRAGMA journal_mode=WAL")
-        return db
+        try:
+            db.row_factory = sqlite3.Row
+            db.execute("PRAGMA busy_timeout=30000")
+            db.execute("PRAGMA journal_mode=WAL")
+            yield db
+            db.commit()
+        except Exception:
+            db.rollback()
+            raise
+        finally:
+            db.close()
 
     def record_success(self, task_scope: str, failure_class: str, node_type: str, graph_node_types: Iterable[str], error: Any, guidance: str | None = None) -> str:
         scope, failure, node = safe_scope(task_scope), safe_scope(failure_class), safe_scope(node_type or "unknown")

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Deterministic regression for promotion, quarantine, lineage, and migration."""
 import sqlite3
+from contextlib import closing
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
@@ -134,7 +135,7 @@ def main() -> None:
         assert any(
             event["event_type"] == "policy_quarantined" for event in events
         )
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db:
             columns = {
                 row[1] for row in db.execute(
                     "PRAGMA table_info(experiences)"
