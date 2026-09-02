@@ -95,6 +95,7 @@ def normalize_dsl(
         model_provider=model_provider,
         model_name=model_name,
         thinking_mode=thinking_mode,
+        max_iteration_items=max(1, int(os.environ.get("HARNESS_MAX_ITERATION_ITEMS", "12"))),
     )
     adapter_actions = requirement_actions + runtime_actions
     return yaml.safe_dump(data, allow_unicode=True, sort_keys=False), start_types, adapter_actions
@@ -166,6 +167,23 @@ def prepare_inputs(raw: Dict[str, Any], start_types: Dict[str, str], api_key: st
     prepared: Dict[str, Any] = {}
     for name, value in raw.items():
         variable_type = start_types.get(name, "paragraph")
+        if isinstance(value, list) and variable_type in {"file-list", "multiple-files"}:
+            uploaded_files: List[Dict[str, Any]] = []
+            for item in value:
+                if isinstance(item, dict) and isinstance(item.get("value"), str):
+                    uploaded_files.append(upload_file(api_key, user, item["value"]))
+                elif (
+                    isinstance(item, dict)
+                    and item.get("transfer_method") == "local_file"
+                    and item.get("upload_file_id")
+                ):
+                    uploaded_files.append(item)
+                else:
+                    raise TypeError(
+                        f"Unsupported file-list item for {name}: {type(item).__name__}"
+                    )
+            prepared[name] = uploaded_files
+            continue
         if value == "" and variable_type in {"file", "single-file", "file-list", "multiple-files"}:
             continue
         if isinstance(value, dict) and isinstance(value.get("value"), str):
@@ -634,6 +652,29 @@ def run_case_group(
         results.append(item)
     return results
 
+
+def partition_jobs_for_resume(
+    jobs: List[Tuple[str, str, str, Path, Dict[str, Any]]],
+    previous_rows: List[Dict[str, Any]],
+    source: Path,
+) -> Tuple[List[Tuple[str, str, str, Path, Dict[str, Any]]], List[Dict[str, Any]]]:
+    previous = {
+        (str(item.get("arm")), str(item.get("case")), str(item.get("input_id"))): item
+        for item in previous_rows
+    }
+    pending = []
+    reused = []
+    for job in jobs:
+        prior = previous.get((job[0], job[1], job[2]))
+        if prior and prior.get("resolve_proxy"):
+            item = dict(prior)
+            item["reused_from"] = str(source)
+            reused.append(item)
+        else:
+            pending.append(job)
+    return pending, reused
+
+
 def main_all3() -> None:
     parser = argparse.ArgumentParser(description="Run three fixed Dify inputs per workflow.")
     parser.add_argument("--arm", dest="arms", action="append", choices=sorted(ARMS))
@@ -661,6 +702,15 @@ def main_all3() -> None:
         type=int,
         default=2,
         help="Consecutive policy failures before automatic quarantine.",
+    )
+    parser.add_argument(
+        "--resume-from",
+        help="Existing result.json. Passing trials are reused; only missing or failed trials run.",
+    )
+    parser.add_argument(
+        "--sample-parallel",
+        action="store_true",
+        help="Run fixed inputs independently in parallel. Incompatible with an experience database.",
     )
     args = parser.parse_args()
     experience_pool = (
@@ -695,11 +745,34 @@ def main_all3() -> None:
     if not jobs:
         raise SystemExit("No matching jobs.")
 
-    results: List[Dict[str, Any]] = []
-    grouped_jobs: Dict[Tuple[str, str], List[Tuple[str, str, str, Path, Dict[str, Any]]]] = {}
+    if args.sample_parallel and experience_pool is not None:
+        raise SystemExit(
+            "--sample-parallel cannot be combined with --experience-db; "
+            "warm repair order must stay sequential."
+        )
+
+    reused_results: List[Dict[str, Any]] = []
+    if args.resume_from:
+        resume_path = Path(args.resume_from)
+        previous_rows = json.loads(
+            resume_path.read_text(encoding="utf-8")
+        ).get("results", [])
+        jobs, reused_results = partition_jobs_for_resume(
+            jobs, previous_rows, resume_path
+        )
+        print(json.dumps({
+            "resume_from": str(resume_path),
+            "reused_successes": len(reused_results),
+            "scheduled_trials": len(jobs),
+        }, ensure_ascii=False), flush=True)
+
+    results: List[Dict[str, Any]] = list(reused_results)
+    grouped_jobs: Dict[Tuple[str, ...], List[Tuple[str, str, str, Path, Dict[str, Any]]]] = {}
     for job in jobs:
-        grouped_jobs.setdefault((job[0], job[1]), []).append(job)
-    with ThreadPoolExecutor(max_workers=max(1, args.workers), thread_name_prefix="dify-all3") as pool:
+        group_key = (job[0], job[1], job[2]) if args.sample_parallel else (job[0], job[1])
+        grouped_jobs.setdefault(group_key, []).append(job)
+    thread_prefix = "dify-trial" if args.sample_parallel else "dify-all3"
+    with ThreadPoolExecutor(max_workers=max(1, args.workers), thread_name_prefix=thread_prefix) as pool:
         futures = {
             pool.submit(
                 run_case_group,
@@ -730,6 +803,9 @@ def main_all3() -> None:
         "model": args.model,
         "thinking": args.thinking,
         "experience_pool_enabled": experience_pool is not None,
+        "sample_parallel": args.sample_parallel,
+        "resumed_successes": len(reused_results),
+        "scheduled_trials": len(jobs),
         "arms": {},
     }
     for arm in selected_arms:

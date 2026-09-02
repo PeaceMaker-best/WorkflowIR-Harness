@@ -12,6 +12,8 @@ WorkflowIR-Harness converts natural-language workflow generation from a JSON imi
 - A Dify adapter that keeps platform compatibility changes separate from workflow semantics.
 - Trace-guided node repair with at most two retries; topology failures remain full-regeneration events.
 - A task-isolated repair memory with candidate promotion, version lineage, automatic quarantine, and secret-safe audit events.
+- Deterministic contracts for delimited chart parameters, multi-file uploads, and bounded Iteration fan-out.
+- Incremental execution that reuses successful trial keys and supports sample-level parallelism when runtime memory is disabled.
 
 ## Frozen developer result
 
@@ -21,6 +23,19 @@ WorkflowIR-Harness converts natural-language workflow generation from a JSON imi
 | WorkflowIR-Harness | 14/15 | 14/15 | 14/15 (93.3%) | 4/5 |
 
 The scoped evaluation contains five Developer workflows and three fixed inputs per workflow. The single remaining harness failure was an audited Dify plugin-database capacity error; an exact infrastructure-only retry passed. This is a developer subset result, not a blind or full leaderboard claim.
+
+## Expanded runtime result
+
+The incremental study covers 19 harness workflows and 57 fixed-input executions. Official artifacts exist for 16 workflows, which form the paired comparison below.
+
+| Arm | Runtime acceptance | Stable runtime workflows | Semantic success | Stable semantic workflows |
+|---|---:|---:|---:|---:|
+| Official agentic artifacts | 32/48 (66.7%) | 10/16 | 23/48 (47.9%) | 5/16 |
+| WorkflowIR-Harness | 45/48 (93.8%) | 15/16 | 34/48 (70.8%) | 9/16 |
+
+Across all 19 harness workflows, runtime acceptance is 54/57 (94.7%) and 18/19 workflows pass all three inputs. The remaining three trials are retained as `StudyPlanner_3` timeouts.
+
+See `docs/EXPANDED_RUNTIME_EVAL.md` for protocol, adapter repairs, full-denominator metrics, and claim boundaries.
 
 
 ## Pipeline
@@ -54,7 +69,7 @@ See:
 
 ## Claim boundary
 
-The current evidence covers five Developer workflows and fifteen functional executions per arm. It supports a scoped engineering claim, not a full Chat2Workflow leaderboard claim.
+The frozen Developer table covers five workflows and remains unchanged. The expanded study covers 19 harness workflows, with 16 paired official artifacts. Both support scoped engineering claims, not a full Chat2Workflow leaderboard claim.
 
 The frozen result predates the self-evolving policy layer; no online uplift from that layer is claimed yet.
 
@@ -104,6 +119,19 @@ PYTHONPATH=src python src/run_dify_all3.py --arm staged --workers 5 --experience
 
 `--experience-db` enables safe self-evolution with default promotion and quarantine gates. Without it, the runner performs trace-guided repair but does not persist repair experience.
 
+For a cold incremental run, successful trial keys can be reused and independent inputs can run concurrently:
+
+```bash
+PYTHONPATH=src python src/run_dify_all3.py \
+  --arm staged \
+  --workers 12 \
+  --sample-parallel \
+  --resume-from results/previous/result.json \
+  --result-dir results/incremental
+```
+
+`--sample-parallel` is intentionally incompatible with `--experience-db`, because warm repair evidence must preserve per-task input order.
+
 ## Reproducibility
 
 - [Experiment protocol](docs/EXPERIMENT_PROTOCOL.md)
@@ -112,6 +140,9 @@ PYTHONPATH=src python src/run_dify_all3.py --arm staged --workers 5 --experience
 - [Bad cases and repair decisions](docs/BAD_CASES_AND_REPAIRS.md)
 - [Runtime experience pool](docs/RUNTIME_EXPERIENCE_POOL.md)
 - [Safe self-evolution](docs/SELF_EVOLUTION.md)
+- [Expanded runtime evaluation](docs/EXPANDED_RUNTIME_EVAL.md)
+- [Expanded aggregate metrics](docs/expanded_metrics.json)
+- [Expanded compact trial ledger](docs/expanded_trials.json)
 
 ## Acknowledgement
 

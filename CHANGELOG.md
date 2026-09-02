@@ -1,5 +1,16 @@
 # Changelog
 
+## v0.3.0 — 2026-09-02
+
+- Expanded the custom runtime study to 19 harness workflows and 57 fixed-input trials.
+- Added paired runtime and Resolve-stage semantic reporting for 16 workflows with official artifacts.
+- Added deterministic ECharts array-to-delimited-text adaptation.
+- Added Dify-compatible multi-file upload handling.
+- Added a typed Iteration fan-out budget guard.
+- Added successful-trial resume and cold sample-level parallelism.
+
+The expanded run keeps the experience pool disabled. No self-evolving uplift is claimed.
+
 ## v0.2.0 — 2026-09-02
 
 - Added conservative candidate, active, and quarantined policy states.

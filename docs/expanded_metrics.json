@@ -1,0 +1,106 @@
+{
+  "protocol": "custom cumulative runtime evaluation: 19 staged workflows; paired baseline where artifacts exist; three fixed inputs",
+  "runtime_all": {
+    "baseline": {
+      "workflows": 16,
+      "trials": 48,
+      "execution_pass": 35,
+      "output_contract_pass": 32,
+      "resolve_proxy": 32,
+      "three_input_task_pass": 10,
+      "failure_classes": {
+        "binding_output_contract": 3,
+        "execution_node": 11,
+        "infrastructure_timeout": 2
+      }
+    },
+    "staged": {
+      "workflows": 19,
+      "trials": 57,
+      "execution_pass": 54,
+      "output_contract_pass": 54,
+      "resolve_proxy": 54,
+      "three_input_task_pass": 18,
+      "failure_classes": {
+        "infrastructure_timeout": 3
+      }
+    }
+  },
+  "runtime_paired": {
+    "baseline": {
+      "workflows": 16,
+      "trials": 48,
+      "execution_pass": 35,
+      "output_contract_pass": 32,
+      "resolve_proxy": 32,
+      "three_input_task_pass": 10
+    },
+    "staged": {
+      "workflows": 16,
+      "trials": 48,
+      "execution_pass": 45,
+      "output_contract_pass": 45,
+      "resolve_proxy": 45,
+      "three_input_task_pass": 15
+    }
+  },
+  "semantic_all": {
+    "baseline": {
+      "workflows": 16,
+      "trials": 48,
+      "semantic_pass": 23,
+      "three_input_task_pass": 5,
+      "judge_prompt_tokens": 84345,
+      "judge_completion_tokens": 5451
+    },
+    "staged": {
+      "workflows": 19,
+      "trials": 57,
+      "semantic_pass": 40,
+      "three_input_task_pass": 11,
+      "judge_prompt_tokens": 120356,
+      "judge_completion_tokens": 8018
+    }
+  },
+  "semantic_paired": {
+    "baseline": {
+      "workflows": 16,
+      "trials": 48,
+      "semantic_pass": 23,
+      "three_input_task_pass": 5,
+      "judge_prompt_tokens": 84345,
+      "judge_completion_tokens": 5451
+    },
+    "staged": {
+      "workflows": 16,
+      "trials": 48,
+      "semantic_pass": 34,
+      "three_input_task_pass": 9,
+      "judge_prompt_tokens": 113240,
+      "judge_completion_tokens": 7133
+    }
+  },
+  "paired_workflows": [
+    "Code_3",
+    "ContractReview_3",
+    "ErrorNotebook_2",
+    "ExcelExtract_2",
+    "FormulaOCR_3",
+    "HTML_3",
+    "HomeworkGrading_2",
+    "InvoiceParsing_3",
+    "MeetingSummary_2",
+    "Mermaid_2",
+    "PaperDeepReader_4",
+    "PaperQA_3",
+    "PerformanceChart_4",
+    "StoryPPT_3",
+    "StudyPlanner_3",
+    "Translation_4"
+  ],
+  "notes": [
+    "Runtime acceptance requires successful Dify execution and non-empty required outputs.",
+    "Semantic success uses the official Resolve prompt with a same-model low-cost judge.",
+    "Comparative claims use only the 16 paired workflows."
+  ]
+}

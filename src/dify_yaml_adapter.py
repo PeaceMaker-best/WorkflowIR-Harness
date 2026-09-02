@@ -24,6 +24,11 @@ def _infer_output_type(node_data: Dict[str, Any], variable: str) -> Optional[str
         "document-extractor",
     }:
         return "string"
+    if node_type == "parameter-extractor":
+        for item in node_data.get("parameters", []):
+            if item.get("name") == variable and isinstance(item.get("type"), str):
+                return item["type"]
+        return None
     if node_type == "iteration" and variable == "output":
         return node_data.get("output_type")
     if node_type == "variable-aggregator" and variable == "output":
@@ -110,13 +115,66 @@ def _insert_array_to_text_normalizer(
         "width": 244,
     }
     edges = graph.setdefault("edges", [])
+    rewired = False
     for edge in edges:
         if str(edge.get("source")) == source_id and str(edge.get("target")) == target_id:
             edge["target"] = normalizer_id
             edge["id"] = f"{source_id}-source-{normalizer_id}-target"
             edge.setdefault("data", {})["targetType"] = "code"
+            rewired = True
+    if not rewired:
+        edges.append(_edge(source, normalizer))
     edges.append(_edge(normalizer, target))
     graph.setdefault("nodes", []).append(normalizer)
+    return normalizer, normalizer_id
+
+
+def _insert_array_to_delimited_text_normalizer(
+    graph: Dict[str, Any],
+    source: Dict[str, Any],
+    source_variable: str,
+    target: Dict[str, Any],
+    separator: str,
+) -> Tuple[Dict[str, Any], str]:
+    normalizer, normalizer_id = _insert_array_to_text_normalizer(
+        graph, source, source_variable, target
+    )
+    source_value_type = _infer_output_type(source.get("data") or {}, source_variable)
+    normalizer_data = normalizer["data"]
+    normalizer_data["code"] = (
+        "def main(items: list) -> dict:\n"
+        "    if items is None:\n"
+        "        return {'text': ''}\n"
+        "    if not isinstance(items, list):\n"
+        "        return {'text': str(items)}\n"
+        f"    return {{'text': {separator!r}.join(str(item) for item in items if item is not None)}}\n"
+    )
+    normalizer_data["desc"] = "Deterministic contract repair: normalize array output to delimited text."
+    normalizer_data["title"] = "Contract: Array to Delimited Text"
+    normalizer_data["variables"][0]["value_type"] = source_value_type or "array[string]"
+    return normalizer, normalizer_id
+
+
+def _insert_array_fanout_cap(
+    graph: Dict[str, Any],
+    source: Dict[str, Any],
+    source_variable: str,
+    target: Dict[str, Any],
+    max_items: int,
+) -> Tuple[Dict[str, Any], str]:
+    normalizer, normalizer_id = _insert_array_to_text_normalizer(
+        graph, source, source_variable, target
+    )
+    source_value_type = _infer_output_type(source.get("data") or {}, source_variable) or "array[string]"
+    normalizer_data = normalizer["data"]
+    normalizer_data["code"] = (
+        "def main(items: list) -> dict:\n"
+        f"    return {{'items': list(items or [])[:{max_items}]}}\n"
+    )
+    normalizer_data["outputs"] = {"items": {"children": None, "type": source_value_type}}
+    normalizer_data["desc"] = f"Deterministic resource guard: cap iteration fan-out at {max_items}."
+    normalizer_data["title"] = "Contract: Bound Iteration Fan-out"
+    normalizer_data["variables"][0]["value_type"] = source_value_type
     return normalizer, normalizer_id
 
 
@@ -207,10 +265,13 @@ def patch_runtime_contracts(
     model_name: Optional[str] = None,
     thinking_mode: str = "disabled",
     allow_artifact_fallback: bool = True,
+    max_iteration_items: int = 12,
 ) -> List[str]:
     """Fill runtime contracts and bind every model-backed node to one test model."""
     if thinking_mode not in {"disabled", "enabled"}:
         raise ValueError(f"unsupported thinking mode: {thinking_mode}")
+    if max_iteration_items < 1:
+        raise ValueError("max_iteration_items must be positive")
     graph = data.get("workflow", {}).get("graph", {})
     nodes = graph.get("nodes", [])
     node_by_id = {str(node.get("id")): node for node in nodes}
@@ -274,6 +335,39 @@ def patch_runtime_contracts(
             f"rewrite_model:{node_type}:{node.get('id')}="
             f"{model_provider}/{model_name};thinking={thinking_mode}"
         )
+
+    for node in list(nodes):
+        node_data = node.get("data") or {}
+        provider = f"{node_data.get('provider_id', '')} {node_data.get('provider_name', '')}".lower()
+        if (
+            node_data.get("type") != "tool"
+            or "echarts" not in provider
+        ):
+            continue
+        for parameter_name, parameter in (node_data.get("tool_parameters") or {}).items():
+            if not isinstance(parameter, dict):
+                continue
+            value = parameter.get("value")
+            if not isinstance(value, str):
+                continue
+            match = re.fullmatch(r"\{\{#([^.{}]+)\.([^#{}]+)#\}\}", value.strip())
+            if not match:
+                continue
+            source_id, source_variable = match.group(1), match.group(2)
+            source_node = node_by_id.get(source_id)
+            source_type = _infer_output_type((source_node or {}).get("data") or {}, source_variable)
+            if not source_node or not source_type or not source_type.startswith("array["):
+                continue
+            normalizer, normalizer_id = _insert_array_to_delimited_text_normalizer(
+                graph, source_node, source_variable, node, ";"
+            )
+            parameter["value"] = f"{{{{#{normalizer_id}.text#}}}}"
+            node_by_id[normalizer_id] = normalizer
+            actions.append(
+                f"normalize_echarts_array_parameter:{node.get('id')}:{parameter_name}="
+                f"{source_id}.{source_variable}->{normalizer_id}.text"
+            )
+
     if allow_artifact_fallback:
         for node in list(nodes):
             if not _replace_markdown_exporter(node):
@@ -302,6 +396,32 @@ def patch_runtime_contracts(
                 changed = True
         if changed:
             actions.append(f"bound_http_timeouts:{node.get('id')}=10/30/30")
+
+    for node in list(nodes):
+        node_data = node.get("data") or {}
+        if node_data.get("type") != "iteration":
+            continue
+        selector = node_data.get("iterator_selector")
+        if not isinstance(selector, list) or len(selector) < 2:
+            continue
+        source_id, source_variable = str(selector[0]), str(selector[1])
+        source_node = node_by_id.get(source_id)
+        source_data = (source_node or {}).get("data") or {}
+        source_type = _infer_output_type(source_data, source_variable)
+        if source_data.get("title") == "Contract: Bound Iteration Fan-out":
+            continue
+        if not source_node or not source_type or not source_type.startswith("array["):
+            continue
+        cap_node, cap_node_id = _insert_array_fanout_cap(
+            graph, source_node, source_variable, node, max_iteration_items
+        )
+        selector[:] = [cap_node_id, "items"]
+        node_by_id[cap_node_id] = cap_node
+        actions.append(
+            f"bound_iteration_fanout:{node.get('id')}="
+            f"{source_id}.{source_variable}->{cap_node_id}.items;limit={max_iteration_items}"
+        )
+
     for node in list(nodes):
         node_data = node.get("data") or {}
         if node_data.get("type") != "iteration":

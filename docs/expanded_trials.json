@@ -1,0 +1,1052 @@
+[
+  {
+    "arm": "baseline",
+    "case": "Code_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Code_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Code_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ContractReview_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "baseline",
+    "case": "ContractReview_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "baseline",
+    "case": "ContractReview_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "baseline",
+    "case": "ErrorNotebook_2",
+    "input_id": "test1",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ErrorNotebook_2",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ErrorNotebook_2",
+    "input_id": "test3",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ExcelExtract_2",
+    "input_id": "test1",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ExcelExtract_2",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "ExcelExtract_2",
+    "input_id": "test3",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "FormulaOCR_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "FormulaOCR_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "FormulaOCR_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HTML_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HTML_3",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HTML_3",
+    "input_id": "test3",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HomeworkGrading_2",
+    "input_id": "test1",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HomeworkGrading_2",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "HomeworkGrading_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "InvoiceParsing_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "InvoiceParsing_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "InvoiceParsing_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "MeetingSummary_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "MeetingSummary_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "MeetingSummary_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Mermaid_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Mermaid_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Mermaid_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperDeepReader_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperDeepReader_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperDeepReader_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperQA_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperQA_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PaperQA_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PerformanceChart_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": false,
+    "failure_class": "binding_output_contract",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PerformanceChart_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": false,
+    "failure_class": "binding_output_contract",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "PerformanceChart_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": false,
+    "failure_class": "binding_output_contract",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StoryPPT_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StoryPPT_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StoryPPT_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StudyPlanner_3",
+    "input_id": "test1",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "execution_node",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StudyPlanner_3",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "infrastructure_timeout",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "StudyPlanner_3",
+    "input_id": "test3",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "infrastructure_timeout",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Translation_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Translation_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "baseline",
+    "case": "Translation_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "BatchFiles_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "BatchFiles_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "BatchFiles_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Code_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Code_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Code_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ContractReview_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ContractReview_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ContractReview_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ErrorNotebook_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ErrorNotebook_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ErrorNotebook_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ExamQuestion_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ExamQuestion_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ExamQuestion_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "file_outputs_checked_separately"
+  },
+  {
+    "arm": "staged",
+    "case": "ExcelExtract_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ExcelExtract_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ExcelExtract_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "FormulaOCR_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "FormulaOCR_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "FormulaOCR_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HTML_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HTML_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HTML_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HomeworkGrading_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HomeworkGrading_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "HomeworkGrading_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "InvoiceParsing_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "InvoiceParsing_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "InvoiceParsing_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "MeetingSummary_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "MeetingSummary_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "MeetingSummary_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Mermaid_2",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Mermaid_2",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Mermaid_2",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperDeepReader_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperDeepReader_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperDeepReader_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperQA_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperQA_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PaperQA_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PerformanceChart_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PerformanceChart_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "PerformanceChart_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ResumeScreening_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ResumeScreening_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "ResumeScreening_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "StoryPPT_3",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "StoryPPT_3",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "StoryPPT_3",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "StudyPlanner_3",
+    "input_id": "test1",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "infrastructure_timeout",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "staged",
+    "case": "StudyPlanner_3",
+    "input_id": "test2",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "infrastructure_timeout",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "staged",
+    "case": "StudyPlanner_3",
+    "input_id": "test3",
+    "execution_pass": false,
+    "runtime_acceptance": false,
+    "failure_class": "infrastructure_timeout",
+    "semantic_pass": false,
+    "semantic_reason_code": "execution_or_output_contract_failed"
+  },
+  {
+    "arm": "staged",
+    "case": "Translation_4",
+    "input_id": "test1",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": false,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Translation_4",
+    "input_id": "test2",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  },
+  {
+    "arm": "staged",
+    "case": "Translation_4",
+    "input_id": "test3",
+    "execution_pass": true,
+    "runtime_acceptance": true,
+    "failure_class": null,
+    "semantic_pass": true,
+    "semantic_reason_code": "judge_assessed"
+  }
+]
