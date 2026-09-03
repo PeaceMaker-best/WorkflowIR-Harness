@@ -1,7 +1,7 @@
-# Task-scoped runtime experience pool
+# Experimental task-scoped repair memory
 
-The experience pool reduces repeated repair cost without becoming an answer cache or leaking solutions across benchmark tasks.
-The v0.2 runner wraps these base storage and retrieval mechanics with the candidate, active, and quarantined lifecycle documented in [SELF_EVOLUTION.md](SELF_EVOLUTION.md). Only promoted active policies are injected online.
+The pool is an experimental store for generic repair-policy hints. It is designed to study repeated repair cost without becoming an answer cache, but the current repository does not demonstrate online task-success or cost improvement from it.
+The runner wraps these base storage and retrieval mechanics with the candidate, active, and quarantined lifecycle documented in [SELF_EVOLUTION.md](SELF_EVOLUTION.md). Only promoted active policies are eligible for injection.
 
 
 ## Lifecycle
@@ -12,7 +12,7 @@ The v0.2 runner wraps these base storage and retrieval mechanics with the candid
 4. Retrieve the top promoted policy under strict same-task gates for attributable feedback.
 5. Inject the current trace as authoritative evidence and past policies as optional hints.
 6. Rerun the complete graph; never accept a local repair without full-graph validation.
-7. Persist a policy only when the repair produces a successful end-to-end run.
+7. Persist a generic text policy only when the rerun passes Dify execution and required-output checks. This is not semantic validation and does not store the successful code Diff, control flow, or full Trace.
 
 ## Stored schema
 
@@ -47,11 +47,11 @@ Infrastructure failures are retryable availability events and never become repai
 
 ## Concurrency model
 
-Fixed inputs within one task scope execute sequentially so a successful repair can warm the next input. Different tasks execute concurrently. SQLite WAL mode, a process lock, and bounded retention keep writes safe under the task-parallel runner.
+Fixed inputs within one task scope execute sequentially and different tasks may run concurrently as threads inside one runner process. The implementation uses a process-local `threading.RLock` plus SQLite WAL/busy timeout; it does not provide an inter-process lock. Multiple runner processes must not share one experience database.
 
 ## Validation
 
-The offline regression observes zero cold-start hits and one verified same-task warm hit; it also verifies task isolation, wrong-class and wrong-graph rejection, redaction, concurrent feedback, and the absence of secret or raw-output columns. This is a routing and storage regression, not a claim of online task-success lift.
+The offline regression verifies storage/retrieval mechanics, task isolation, wrong-class and wrong-graph rejection, redaction, same-process threaded writes, and the absence of secret or raw-output columns. Its “warm hit” is a synthetic retrieval check, not a held-out end-to-end task result. With the default three-success promotion threshold, the three-input protocol promotes a new candidate only after its final input, so a separate later or held-out input is required to measure Warm benefit.
 
 ```bash
 PYTHONPATH=src python tests/experience_pool_selftest.py

@@ -1,11 +1,13 @@
-# Safe Self-Evolution of Runtime Repair Policies
+# Experimental Lifecycle for Runtime Repair Policies
 
 ## Scope
 
-“Self-evolution” here means evidence-driven policy selection, not autonomous
-model training, prompt rewriting, or source-code mutation. The evolving unit is a
-small, generic repair policy associated with an exact task scope, failure class,
-node type, normalized error signature, and graph node-type signature.
+This module implements an experimental candidate/active/quarantined lifecycle for
+generic repair-policy text. It is not autonomous model training, prompt rewriting,
+source-code mutation, or a demonstrated self-evolving Agent. The stored unit is a
+generic policy associated with an exact task scope, failure class, node type,
+normalized error signature, and graph node-type signature; it is not the successful
+repair Diff, code, control flow, or full Trace.
 
 The current failure trace always remains authoritative.
 
@@ -38,9 +40,9 @@ The default promotion gate requires:
 2. a Wilson lower-bound reliability of at least `0.40`;
 3. no unresolved consecutive-failure quarantine condition.
 
-A success is counted only after the repaired workflow passes execution and output
-contract checks. Import success, node success, or model confidence alone cannot
-promote a policy.
+A success is counted only after the repaired workflow passes Dify execution and
+required-output checks. Import success, node success, or model confidence alone
+cannot promote a policy, but this gate does not include the separate semantic Judge.
 
 When no active policy was used, a successful trace-guided repair contributes one
 candidate success. When an active policy was used, the same trial updates that
@@ -89,10 +91,10 @@ emails, or platform parameters.
 
 ## Concurrency
 
-Inputs within the same `(arm, task)` group execute sequentially, allowing a
-verified earlier input to update evidence before the next input. Different tasks
-remain concurrent. SQLite WAL mode and a process lock serialize lifecycle
-transitions.
+Inputs within the same `(arm, task)` group execute sequentially and different tasks
+may run concurrently as threads in one runner process. SQLite WAL mode and a
+process-local `threading.RLock` serialize that path. There is no inter-process
+lock, so separate processes must not share one experience database.
 
 ## Configuration
 
@@ -134,5 +136,9 @@ A credible self-evolution experiment should report these separately:
 - repair attempts per successful workflow;
 - number of model repair calls avoided.
 
-The current repository validates lifecycle correctness offline. It does not yet
-claim an online success-rate improvement from self-evolution.
+The current repository validates lifecycle mechanics offline. A candidate is not
+injected before promotion, so its three promotion successes do not causally validate
+the candidate hint itself. With three default inputs and a three-success threshold,
+promotion occurs only after the last matching input; a later held-out input is
+required for a credible Warm comparison. No online success-rate or self-evolution
+improvement is currently claimed.

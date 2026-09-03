@@ -401,6 +401,13 @@ def validate_workflow(
     allowed_types: Set[str],
     schema_by_type: Dict[str, str],
 ) -> List[ValidationError]:
+    """Validate strict base graph invariants before extended binding contracts.
+
+    ``validate_legacy`` is the compatibility entry point and owns the single
+    Start, whole-graph reachability, termination, and strict-upstream checks.
+    Keeping those checks there means callers of either validator receive the
+    same structural guarantees.
+    """
     errors = validate_legacy(workflow, allowed_types, schema_by_type)
     if isinstance(workflow, dict):
         errors.extend(_contract_errors(workflow))

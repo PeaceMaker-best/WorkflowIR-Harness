@@ -69,6 +69,19 @@ def _required_params(schema_text: str) -> Set[str]:
     return set(re.findall(r"(?m)^\s*\d+\.\s*[\"“]([^\"”]+)[\"”]\s*:", block.group(1)))
 
 
+def _reachable(seeds: Iterable[str], adjacency: Dict[str, Set[str]]) -> Set[str]:
+    """Return every node reachable from ``seeds``, including the seeds."""
+    visited: Set[str] = set()
+    queue = deque(seeds)
+    while queue:
+        current = queue.popleft()
+        if current in visited:
+            continue
+        visited.add(current)
+        queue.extend(adjacency.get(current, set()) - visited)
+    return visited
+
+
 def validate_workflow(
     workflow: Any,
     allowed_types: Set[str],
@@ -159,6 +172,14 @@ def validate_workflow(
     ends = [node_id for node_id, node in node_by_id.items() if node.get("type") == "end"]
     if not starts:
         errors.append(ValidationError("graph", "START_MISSING", "Workflow has no start node"))
+    elif len(starts) > 1:
+        errors.append(
+            ValidationError(
+                "graph",
+                "MULTIPLE_START_NODES",
+                f"Workflow must have exactly one start node, got {len(starts)}: {sorted(starts)}",
+            )
+        )
     if not ends:
         errors.append(ValidationError("graph", "END_MISSING", "Workflow has no end node"))
     for node_id, node in node_by_id.items():
@@ -177,6 +198,85 @@ def validate_workflow(
     if ids and visited != len(ids):
         errors.append(ValidationError("graph", "CYCLE_DETECTED", "Workflow graph contains a cycle"))
 
+    # Iteration children form a nested subgraph.  Represent the container's
+    # enter/exit semantics as virtual edges for reachability and data-flow
+    # validation without mutating the authored topology.
+    execution_adjacency: Dict[str, Set[str]] = defaultdict(set)
+    execution_reverse: Dict[str, Set[str]] = defaultdict(set)
+
+    def add_execution_edge(source: str, target: str) -> None:
+        if source in ids and target in ids and target not in execution_adjacency[source]:
+            execution_adjacency[source].add(target)
+            execution_reverse[target].add(source)
+
+    for source, targets in adjacency.items():
+        for target in targets:
+            add_execution_edge(source, target)
+    iteration_ids = {
+        node_id
+        for node_id, node in node_by_id.items()
+        if node.get("type") == "iteration"
+    }
+    iteration_owner: Dict[str, str] = {}
+    for child_id in ids:
+        owners = [
+            parent_id
+            for parent_id in iteration_ids
+            if child_id.startswith(f"{parent_id}-")
+        ]
+        if owners:
+            iteration_owner[child_id] = max(owners, key=len)
+    for parent_id, parent in node_by_id.items():
+        if parent.get("type") != "iteration":
+            continue
+        internal_starts = [
+            child_id
+            for child_id, child in node_by_id.items()
+            if child.get("type") == "iteration-start"
+            and child_id.startswith(f"{parent_id}-")
+        ]
+        for child_id in internal_starts:
+            add_execution_edge(parent_id, child_id)
+        selector = (parent.get("param") or {}).get("output_selector")
+        if isinstance(selector, list) and len(selector) == 2:
+            output_source = str(selector[1])
+            if output_source.startswith(f"{parent_id}-"):
+                for outer_target in adjacency.get(parent_id, set()):
+                    add_execution_edge(output_source, outer_target)
+
+    # Degree and cycle checks alone accept disconnected components. Enforce
+    # the executable workflow invariant: every node belongs to the one graph
+    # entered through Start and can eventually terminate at an End node.
+    if len(starts) == 1:
+        reachable_from_start = _reachable(starts, execution_adjacency)
+        for node_id in sorted(ids - reachable_from_start):
+            errors.append(
+                ValidationError(
+                    "graph",
+                    "NODE_UNREACHABLE_FROM_START",
+                    f"Node {node_id} is not reachable from start node {starts[0]}",
+                    node_id=node_id,
+                )
+            )
+    if ends:
+        can_reach_end = _reachable(ends, execution_reverse)
+        for node_id in sorted(ids - can_reach_end):
+            errors.append(
+                ValidationError(
+                    "graph",
+                    "NODE_CANNOT_REACH_END",
+                    f"Node {node_id} cannot reach any end node",
+                    node_id=node_id,
+                )
+            )
+
+    ancestor_cache: Dict[str, Set[str]] = {}
+
+    def strict_ancestors(node_id: str) -> Set[str]:
+        if node_id not in ancestor_cache:
+            ancestor_cache[node_id] = _reachable([node_id], execution_reverse) - {node_id}
+        return ancestor_cache[node_id]
+
     for node_id, node in node_by_id.items():
         param = node.get("param") or {}
         for path, value in _walk(param):
@@ -184,10 +284,11 @@ def validate_workflow(
             if (
                 isinstance(value, list)
                 and len(value) == 2
-                and all(isinstance(part, str) for part in value)
-                and re.fullmatch(r"\d+(?:-\d+)*", value[1])
+                and isinstance(value[0], str)
+                and isinstance(value[1], (str, int))
+                and re.fullmatch(r"\d+(?:-\d+)*", str(value[1]))
             ):
-                variable_name, source_id = value
+                variable_name, source_id = value[0], str(value[1])
                 references.append((source_id, variable_name))
             if isinstance(value, str):
                 references.extend((source_id, variable_name) for source_id, variable_name in PLACEHOLDER_RE.findall(value))
@@ -210,6 +311,40 @@ def validate_workflow(
                             "binding",
                             "VARIABLE_NAME_NOT_FOUND",
                             f"Node {source_id} does not declare output {variable_name}",
+                            node_id=node_id,
+                            path=path,
+                        )
+                    )
+                    continue
+                source_owner = iteration_owner.get(source_id)
+                target_owner = iteration_owner.get(node_id)
+                iteration_output = (
+                    node.get("type") == "iteration"
+                    and path.endswith("output_selector")
+                    and source_owner == node_id
+                )
+                if (
+                    source_owner is not None
+                    and not iteration_output
+                    and target_owner != source_owner
+                ):
+                    errors.append(
+                        ValidationError(
+                            "binding",
+                            "VARIABLE_SOURCE_OUT_OF_SCOPE",
+                            f"Iteration child {source_id} cannot be referenced outside iteration {source_owner}; "
+                            f"reference the container output instead",
+                            node_id=node_id,
+                            path=path,
+                        )
+                    )
+                    continue
+                if not iteration_output and source_id not in strict_ancestors(node_id):
+                    errors.append(
+                        ValidationError(
+                            "binding",
+                            "VARIABLE_SOURCE_NOT_UPSTREAM",
+                            f"Variable source node {source_id} is not an upstream ancestor of node {node_id}",
                             node_id=node_id,
                             path=path,
                         )

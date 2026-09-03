@@ -61,6 +61,11 @@ def main() -> None:
             model_name="test",
             thinking_mode="off",
             experience_pool=None,
+            current_provenance={
+                ("ours", "Code_2", "test1"): {"experiment_fingerprint": "one"},
+                ("ours", "Code_2", "test2"): {"experiment_fingerprint": "two"},
+            },
+            final_dsl_dir=Path("final-dsl"),
         )
     finally:
         runner.run_one = original_run_one
@@ -74,14 +79,51 @@ def main() -> None:
     pending, reused = partition_jobs_for_resume(
         jobs,
         [
-            {"arm": "staged", "case": "Code_2", "input_id": "test1", "resolve_proxy": True},
-            {"arm": "staged", "case": "Code_2", "input_id": "test2", "resolve_proxy": False},
+            {
+                "arm": "staged",
+                "case": "Code_2",
+                "input_id": "test1",
+                "resolve_proxy": True,
+                "provenance": {"experiment_fingerprint": "same"},
+            },
+            {
+                "arm": "staged",
+                "case": "Code_2",
+                "input_id": "test2",
+                "resolve_proxy": False,
+                "provenance": {"experiment_fingerprint": "two"},
+            },
         ],
         Path("previous/result.json"),
+        {
+            ("staged", "Code_2", "test1"): {"experiment_fingerprint": "same"},
+            ("staged", "Code_2", "test2"): {"experiment_fingerprint": "two"},
+        },
     )
     assert [item[2] for item in pending] == ["test2"]
     assert [item["input_id"] for item in reused] == ["test1"]
     assert reused[0]["reused_from"] == "previous/result.json"
+
+    changed_pending, changed_reused = partition_jobs_for_resume(
+        jobs[:1],
+        [
+            {
+                "arm": "staged",
+                "case": "Code_2",
+                "input_id": "test1",
+                "resolve_proxy": True,
+                "provenance": {"experiment_fingerprint": "old"},
+            }
+        ],
+        Path("previous/result.json"),
+        {
+            ("staged", "Code_2", "test1"): {
+                "experiment_fingerprint": "new"
+            }
+        },
+    )
+    assert changed_pending == jobs[:1]
+    assert not changed_reused
     print("runner_logic_selftest=PASS error_envelope=REJECTED max_repairs=2 same_task_order=SEQUENTIAL")
 
 if __name__ == "__main__":

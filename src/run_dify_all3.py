@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import mimetypes
 import os
@@ -16,6 +17,7 @@ import requests
 import yaml
 
 from dify_yaml_adapter import patch_runtime_contracts
+from dify_dsl_validator import validate_dify_dsl
 from requirement_contract_repairs import apply_requirement_contract_repairs
 from runtime_experience_pool import extract_node_type
 from self_evolving_pool import (
@@ -37,6 +39,147 @@ ARMS = {
 MAX_WORKERS = 26
 DEFAULT_PROVIDER = "langgenius/openai_api_compatible/openai_api_compatible"
 DEFAULT_MODEL = "doubao-seed-evolving"
+RUNNER_PROTOCOL_VERSION = "dify-runtime-v2"
+FINAL_DSL_WRITE_LOCK = threading.Lock()
+
+
+def sha256_bytes(value: bytes) -> str:
+    return hashlib.sha256(value).hexdigest()
+
+
+def sha256_path(path: Path) -> str:
+    return sha256_bytes(path.read_bytes())
+
+
+def canonical_sha256(value: Any) -> str:
+    payload = json.dumps(
+        value,
+        ensure_ascii=False,
+        sort_keys=True,
+        separators=(",", ":"),
+        default=str,
+    ).encode("utf-8")
+    return sha256_bytes(payload)
+
+
+def _code_sha256(paths: List[Path]) -> str:
+    digest = hashlib.sha256()
+    for path in sorted(paths, key=lambda item: item.name):
+        digest.update(path.name.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+    return digest.hexdigest()
+
+
+def _input_fingerprint_value(value: Any) -> Any:
+    if isinstance(value, list):
+        return [_input_fingerprint_value(item) for item in value]
+    if isinstance(value, dict):
+        fingerprinted = {
+            str(key): _input_fingerprint_value(child)
+            for key, child in sorted(value.items(), key=lambda item: str(item[0]))
+        }
+        file_name = value.get("value")
+        if isinstance(file_name, str):
+            candidate = (CASE_FILES / file_name).resolve()
+            if CASE_FILES.resolve() in candidate.parents and candidate.is_file():
+                fingerprinted["_file_sha256"] = sha256_path(candidate)
+                fingerprinted["_file_size"] = candidate.stat().st_size
+        return fingerprinted
+    return value
+
+
+def build_trial_provenance(
+    yaml_path: Path,
+    yaml_content: str,
+    check: Dict[str, Any],
+    model_provider: str,
+    model_name: str,
+    thinking_mode: str,
+) -> Dict[str, Any]:
+    source_dir = Path(__file__).resolve().parent
+    endpoint_identity = {
+        "console": CONSOLE.rstrip("/"),
+        "service": SERVICE.rstrip("/"),
+    }
+    provenance: Dict[str, Any] = {
+        "protocol_version": RUNNER_PROTOCOL_VERSION,
+        "source_yaml": yaml_path.name,
+        "source_yaml_sha256": sha256_path(yaml_path),
+        "final_dsl_sha256": sha256_bytes(yaml_content.encode("utf-8")),
+        "input_sha256": canonical_sha256(
+            _input_fingerprint_value(check.get("test1", {}))
+        ),
+        "output_contract_sha256": canonical_sha256(check.get("output_var", [])),
+        "adapter_code_sha256": _code_sha256(
+            [
+                source_dir / "dify_yaml_adapter.py",
+                source_dir / "requirement_contract_repairs.py",
+            ]
+        ),
+        "validator_code_sha256": sha256_path(source_dir / "dify_dsl_validator.py"),
+        "runner_code_sha256": sha256_path(Path(__file__).resolve()),
+        "model_provider": model_provider,
+        "model_name": model_name,
+        "thinking_mode": thinking_mode,
+        "dify_version": os.environ.get("DIFY_VERSION", "unknown"),
+        "dify_endpoint_sha256": canonical_sha256(endpoint_identity),
+        "max_iteration_items": max(
+            1, int(os.environ.get("HARNESS_MAX_ITERATION_ITEMS", "12"))
+        ),
+    }
+    provenance["experiment_fingerprint"] = canonical_sha256(provenance)
+    return provenance
+
+
+def preview_trial_provenance(
+    arm: str,
+    case: str,
+    yaml_path: Path,
+    check: Dict[str, Any],
+    model_provider: str,
+    model_name: str,
+    thinking_mode: str,
+) -> Dict[str, Any]:
+    yaml_content, _, _ = normalize_dsl(
+        yaml_path,
+        arm,
+        case,
+        model_provider=model_provider,
+        model_name=model_name,
+        thinking_mode=thinking_mode,
+    )
+    return build_trial_provenance(
+        yaml_path,
+        yaml_content,
+        check,
+        model_provider,
+        model_name,
+        thinking_mode,
+    )
+
+
+def store_final_dsl(
+    final_dsl_dir: Path | None,
+    arm: str,
+    case: str,
+    final_dsl_sha256: str,
+    yaml_content: str,
+) -> str | None:
+    if final_dsl_dir is None:
+        return None
+    safe_case = re.sub(r"[^A-Za-z0-9_.-]+", "_", case)
+    path = (
+        final_dsl_dir
+        / arm
+        / f"{safe_case}-{final_dsl_sha256[:16]}.yaml"
+    )
+    with FINAL_DSL_WRITE_LOCK:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        if not path.exists():
+            path.write_text(yaml_content, encoding="utf-8", newline="\n")
+    return path.as_posix()
 
 
 def load_env(path: Path) -> Dict[str, str]:
@@ -320,6 +463,8 @@ def run_one(
     model_name: str = DEFAULT_MODEL,
     thinking_mode: str = "disabled",
     experience_pool: SelfEvolvingExperiencePool | None = None,
+    expected_provenance: Dict[str, Any] | None = None,
+    final_dsl_dir: Path | None = None,
 ) -> Dict[str, Any]:
     result: Dict[str, Any] = {"arm": arm, "case": case, "thread": threading.current_thread().name}
     session: requests.Session | None = None
@@ -333,7 +478,49 @@ def run_one(
             model_name=model_name,
             thinking_mode=thinking_mode,
         )
+        provenance = build_trial_provenance(
+            yaml_path,
+            yaml_content,
+            check,
+            model_provider,
+            model_name,
+            thinking_mode,
+        )
+        if (
+            expected_provenance is not None
+            and provenance["experiment_fingerprint"]
+            != expected_provenance.get("experiment_fingerprint")
+        ):
+            raise RuntimeError(
+                "Trial provenance changed between scheduling and execution"
+            )
+        artifact_path = store_final_dsl(
+            final_dsl_dir,
+            arm,
+            case,
+            provenance["final_dsl_sha256"],
+            yaml_content,
+        )
+        if artifact_path:
+            provenance["final_dsl_artifact"] = artifact_path
+        result["provenance"] = provenance
         workflow_document = yaml.safe_load(yaml_content)
+        validation_errors = validate_dify_dsl(workflow_document)
+        result["preflight_validation_pass"] = not validation_errors
+        result["preflight_validation_errors"] = [
+            error.to_dict() for error in validation_errors
+        ]
+        if validation_errors:
+            result.update(
+                {
+                    "execution_pass": False,
+                    "output_contract_pass": False,
+                    "resolve_proxy": False,
+                    "failure_class": "adapter_validation",
+                    "error": "Final Dify DSL failed strict preflight validation",
+                }
+            )
+            return result
         graph_node_types = [
             str((node.get("data") or {}).get("type") or "unknown")
             for node in workflow_document.get("workflow", {}).get("graph", {}).get("nodes", [])
@@ -563,6 +750,7 @@ def main() -> None:
                 model_provider=args.provider,
                 model_name=args.model,
                 thinking_mode=args.thinking,
+                final_dsl_dir=result_dir / "final_dsl",
             ): job[:2]
             for job in jobs
         }
@@ -634,6 +822,8 @@ def run_case_group(
     model_name: str,
     thinking_mode: str,
     experience_pool: SelfEvolvingExperiencePool | None,
+    current_provenance: Dict[Tuple[str, str, str], Dict[str, Any]],
+    final_dsl_dir: Path,
 ) -> List[Dict[str, Any]]:
     results: List[Dict[str, Any]] = []
     for arm, case, input_id, path, check in group:
@@ -646,6 +836,8 @@ def run_case_group(
             model_name=model_name,
             thinking_mode=thinking_mode,
             experience_pool=experience_pool,
+            expected_provenance=current_provenance[(arm, case, input_id)],
+            final_dsl_dir=final_dsl_dir,
         )
         item["case"] = case
         item["input_id"] = input_id
@@ -657,6 +849,7 @@ def partition_jobs_for_resume(
     jobs: List[Tuple[str, str, str, Path, Dict[str, Any]]],
     previous_rows: List[Dict[str, Any]],
     source: Path,
+    current_provenance: Dict[Tuple[str, str, str], Dict[str, Any]],
 ) -> Tuple[List[Tuple[str, str, str, Path, Dict[str, Any]]], List[Dict[str, Any]]]:
     previous = {
         (str(item.get("arm")), str(item.get("case")), str(item.get("input_id"))): item
@@ -665,8 +858,20 @@ def partition_jobs_for_resume(
     pending = []
     reused = []
     for job in jobs:
-        prior = previous.get((job[0], job[1], job[2]))
-        if prior and prior.get("resolve_proxy"):
+        key = (job[0], job[1], job[2])
+        prior = previous.get(key)
+        prior_fingerprint = (
+            ((prior or {}).get("provenance") or {}).get("experiment_fingerprint")
+        )
+        current_fingerprint = (
+            current_provenance.get(key, {}).get("experiment_fingerprint")
+        )
+        if (
+            prior
+            and prior.get("resolve_proxy")
+            and prior_fingerprint
+            and prior_fingerprint == current_fingerprint
+        ):
             item = dict(prior)
             # Persist a platform-independent provenance path in JSON reports.
             item["reused_from"] = source.as_posix()
@@ -751,6 +956,25 @@ def main_all3() -> None:
             "--sample-parallel cannot be combined with --experience-db; "
             "warm repair order must stay sequential."
         )
+    if args.resume_from and experience_pool is not None:
+        raise SystemExit(
+            "--resume-from cannot be combined with --experience-db; "
+            "mutable experience state is not safe to reuse by fingerprint."
+        )
+
+    current_provenance: Dict[
+        Tuple[str, str, str], Dict[str, Any]
+    ] = {}
+    for arm, case, input_id, path, check in jobs:
+        current_provenance[(arm, case, input_id)] = preview_trial_provenance(
+            arm,
+            f"{case}__{input_id}",
+            path,
+            check,
+            args.provider,
+            args.model,
+            args.thinking,
+        )
 
     reused_results: List[Dict[str, Any]] = []
     if args.resume_from:
@@ -759,7 +983,7 @@ def main_all3() -> None:
             resume_path.read_text(encoding="utf-8")
         ).get("results", [])
         jobs, reused_results = partition_jobs_for_resume(
-            jobs, previous_rows, resume_path
+            jobs, previous_rows, resume_path, current_provenance
         )
         print(json.dumps({
             "resume_from": str(resume_path),
@@ -782,6 +1006,8 @@ def main_all3() -> None:
                 args.model,
                 args.thinking,
                 experience_pool,
+                current_provenance,
+                result_dir / "final_dsl",
             ): key
             for key, group in grouped_jobs.items()
         }
@@ -800,9 +1026,11 @@ def main_all3() -> None:
     results.sort(key=lambda item: (item["arm"], item["case"], item["input_id"]))
     summary: Dict[str, Any] = {
         "protocol": "custom final-state protocol: one frozen workflow and three fixed inputs",
+        "protocol_version": RUNNER_PROTOCOL_VERSION,
         "workers": max(1, args.workers),
         "model": args.model,
         "thinking": args.thinking,
+        "dify_version": os.environ.get("DIFY_VERSION", "unknown"),
         "experience_pool_enabled": experience_pool is not None,
         "sample_parallel": args.sample_parallel,
         "resumed_successes": len(reused_results),

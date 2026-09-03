@@ -4,11 +4,11 @@
 
 ![WorkflowIR-Harness: less context, more stable workflows](assets/hero-opencode-vs-workflowir.svg)
 
-**Less context. More stable workflows.**
+**Executable evidence for pre-generated workflows.**
 
-WorkflowIR-Harness is a domain-specific generation and assurance pipeline for bounded visual-workflow configuration. It explores a simple question: when the node catalog, schemas, graph rules, and execution contracts are known, do we still need a general-purpose coding agent?
+The current runnable project is a deterministic execution and assurance harness for pre-generated Dify workflow artifacts. It applies shared runtime compatibility handling, imports and publishes frozen YAML, executes fixed inputs, checks required outputs, records traces, and performs bounded runtime repair. The repository also contains a provider-independent Workflow IR/pipeline prototype, but it does not yet expose a reproducible natural-language-to-IR-to-Dify CLI.
 
-## End-to-end executable demo
+## Executable Dify evidence
 
 [![Code_3 actual Dify UI: workflow canvas, logs, result, and node tracing](examples/code3-demo/screenshots/code3-native-dify-flow.png)](examples/code3-demo/README.md)
 
@@ -23,77 +23,85 @@ On the same two-round **Mermaid_2** task, with the same model and thinking disab
 | OpenCode Agentic | 35,457 | 2 | 3/3 | 0/3 |
 | WorkflowIR-Harness | **24,877** | 5 | 3/3 | **3/3** |
 
-WorkflowIR-Harness processed **29.8% fewer generation tokens despite making more model calls**. The difference came from smaller stage-specific contexts and an explicit output contract. The OpenCode artifact executed, but mixed the knowledge summary with Mermaid source instead of returning clean **summary** and **mermaid_code** outputs.
+In this selected log, the harness path recorded **29.8% fewer generation tokens despite making more model calls**. Its artifact also separated the knowledge summary from Mermaid source through an explicit output contract, while the OpenCode artifact mixed them in one value.
 
-> This is a selected, same-task engineering case study—not an aggregate token claim or an official leaderboard result. See the [full trace and accounting](docs/CASE_STUDY_MERMAID2.md).
+> This evidence is limited to the selected `Mermaid_2` case. It is not an aggregate token claim, does not isolate the cause of the difference, and is not an official leaderboard result. The runtime CLI in this repository does not reproduce the upstream generation calls. See the [full trace and accounting](docs/CASE_STUDY_MERMAID2.md).
 
-## Why a specialized generator?
+## Why an execution harness?
 
-General coding agents are built for an open action space: files, shell commands, dependency discovery, and arbitrary edits. A workflow configuration has a narrower structure:
+Pre-generated workflow artifacts still fail at several observable boundaries:
 
-- a bounded node catalog;
-- typed node schemas;
-- explicit graph and variable-reference rules;
-- a platform adapter;
-- observable import errors, node traces, and output contracts.
+- Dify import and publish compatibility;
+- node execution and provider availability;
+- required output names and non-empty values;
+- task-level semantic proxy checks;
+- auditable, bounded retries after runtime-visible failures.
 
-WorkflowIR-Harness uses those boundaries directly. It does not claim that coding agents are unnecessary for open-ended software work; it tests whether they are unnecessary overhead for this class of configuration task.
+WorkflowIR-Harness evaluates those boundaries directly. It does not establish that a specialized generator replaces coding agents, because the published comparison starts from frozen, already generated workflow artifacts.
 
 ![Contract-guided staged generation pipeline](assets/pipeline-pixel.svg)
 
-## Method
+## Current runnable path
 
-The generator separates five responsibilities:
+```text
+Frozen pre-generated YAML
+        ↓
+Requirement/runtime contract patch
+        ↓
+Shared Dify compatibility handling
+        ↓
+Import/publish → execute fixed input → required-output check
+        ↓
+Trace-guided bounded repair → complete workflow rerun
+```
 
-1. **Rewrite** compresses conversation history into a confirmed requirement contract.
-2. **Retrieve** selects candidate nodes from summaries and discloses full schemas only when binding.
-3. **Graph** plans nodes, edges, branches, and merge structure without platform serialization noise.
-4. **Bind** resolves variables and node parameters into Workflow IR.
-5. **Validate** classifies failures and chooses the smallest safe repair scope.
+Both comparison arms receive the same environment-only Dify compatibility handling. Requirement-aware changes are applied only to the staged artifact bundle. The real runner records import, execution, output-contract, and infrastructure failures. Detailed Graph and Binding issue classes exist primarily in the separate Workflow IR/validator prototype; the main runtime study does not claim one unified four-layer classifier.
 
-Graph failures trigger topology regeneration. Binding failures rebind the affected node. Runtime failures use the failing node trace. Every repair is followed by a complete workflow rerun; infrastructure failures are recorded separately rather than blamed on generation.
+## Workflow IR pipeline prototype
 
-## Progressive assurance
+The provider-independent prototype defines injectable Rewrite, Retrieve, Graph, Bind, Validate, and Repair interfaces plus Direct, Staged, Guarded, and Adaptive profiles. Its deterministic structural validator checks graph endpoints, edge structure, and reference structure; it does not yet guarantee correct variable field names, output types, file contents, or business semantics. The self-test uses in-memory stub functions, so this remains architecture scaffolding rather than a production generator or a runnable natural-language-to-Dify path.
 
 ![Direct, staged, guarded, and adaptive assurance profiles](assets/assurance-profiles.svg)
 
-The harness is deliberately removable:
-
 | Profile | Intended use | Enabled path |
 |---|---|---|
-| **direct** | Small linear configurations | One-shot generation |
-| **staged** | Moderate configurations | Rewrite → Retrieve → Graph → Bind |
-| **guarded** | Branching or contract-heavy workflows | Staged generation + typed validation and repair |
-| **adaptive** | Repeated task families | Guarded path + evidence-gated repair memory |
+| **direct** | Prototype API | Injected direct callable |
+| **staged** | Prototype API | Injected Rewrite → Retrieve → Graph → Bind callables |
+| **guarded** | Prototype API | Staged path + injected validation/repair |
+| **adaptive** | Prototype API | Guarded path with an experience-use flag |
 
-A simple employee lookup passed with 9,040 tokens through direct generation and 10,626 through staged generation. The complex Mermaid case favored the guarded path. This is why the project treats assurance as a profile, not as a mandatory pile of constraints. Automatic profile selection remains future work.
+The repository does not report production effectiveness for these profiles, and automatic profile selection remains future work.
 
-## 48 matched test instances, 96 system trials — stable workflows, not lucky samples
+## 16 tasks, 48 matched inputs, 96 logical system-side trials
 
 A workflow is **stable** only when the same frozen configuration passes all three fixed functional inputs. This is the primary engineering signal: one successful sample is not enough.
 
+> **Legacy result boundary:** the table below is a pre-P0 snapshot produced before the deterministic structural validator and the rule that marks every outcome containing an unverified file-valued field—including mixed file-and-text outputs—as unverified. The current code has not yet completed a full rerun under the new protocol, so these numbers must not be presented as reproduced by the current version.
+
 ![Scoped evaluation: stable workflows and task success](assets/scoped-evaluation.svg)
 
-The paired study evaluates **16 public Chat2Workflow tasks × 3 fixed inputs × 2 systems = 96 system trials**, organized as **48 matched pairs**. Task-level stability still requires one frozen workflow to pass all three inputs:
+The paired matrix contains **16 public Chat2Workflow tasks × 3 fixed inputs × 2 systems = 96 logical system-side trials**, organized as **48 matched pairs**. Incremental reruns may reuse already passing records, so 96 describes the comparison matrix rather than the number of newly executed requests in every report. Task-level stability still requires one frozen workflow to pass all three inputs:
 
-| Method | Stable runtime workflows | Runtime acceptance | Stable semantic workflows | Semantic success |
-|---|---:|---:|---:|---:|
-| Official Agentic artifacts | 10/16 | 32/48 (66.7%) | 5/16 | 23/48 (47.9%) |
-| WorkflowIR-Harness | **15/16** | **45/48 (93.8%)** | **9/16** | **34/48 (70.8%)** |
+| Method | Dify execution | Runtime acceptance | Stable runtime workflows | Semantic-Judge pass | Stable semantic workflows |
+|---|---:|---:|---:|---:|---:|
+| Official Agentic artifacts | 35/48 (72.9%) | 32/48 (66.7%) | 10/16 | 23/48 (47.9%) | 5/16 |
+| Staged artifact bundle | **45/48 (93.8%)** | **45/48 (93.8%)** | **15/16** | **34/48 (70.8%)** | **9/16** |
 
-Across all 19 harness workflows, 18/19 passed all three runtime inputs; 54/57 harness system trials passed runtime acceptance (94.7%). The remaining three trials were retained as **StudyPlanner_3** timeouts.
+Both arms receive the same environment-only runtime compatibility handling. No component ablation was run, so the bundle-level differences cannot be attributed independently to Workflow IR, requirement patching, the adapter, validation, or bounded repair.
 
-The tasks originate from the public [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow) benchmark, but this project intentionally uses a different engineering protocol. Runtime-visible import errors, node traces, and output-contract violations may guide bounded repair. Ground-truth workflows and judge answers are never exposed to generation or repair. See [Evaluation protocol](docs/EVALUATION.md) and [Claims and limitations](docs/CLAIMS_AND_LIMITATIONS.md).
+Across all 19 staged workflows, 18/19 passed all three runtime inputs; 54/57 logical trial records passed runtime acceptance (94.7%). The remaining three records were retained as **StudyPlanner_3** timeouts.
+
+The tasks originate from the public [Chat2Workflow](https://github.com/zjunlp/Chat2Workflow) benchmark, but this project intentionally uses a different post-hoc engineering protocol over frozen artifacts. Runtime-visible import errors, node traces, and output-contract violations may guide bounded repair. Reference workflows and Judge answers are not exposed to repair. The semantic result is still a low-cost proxy: the same model is used at temperature zero, outputs are capped at 16,000 characters, and there is no independent human adjudication. The legacy snapshot accepted outputs whose file contents were not inspected; the new P0 evaluator marks every outcome containing an unverified file-valued field—including mixed file-and-text outputs—as unverified until an independent content check exists. See [Evaluation protocol](docs/EVALUATION.md) and [Claims and limitations](docs/CLAIMS_AND_LIMITATIONS.md).
 
 ## Failure is evidence, not another lottery ticket
 
 The engineering loop is:
 
 ~~~text
-generate → validate → execute → classify → bounded repair → full rerun
+frozen YAML → runtime patch/adapter → execute → classify → bounded repair → complete workflow rerun
 ~~~
 
-It does not repeatedly sample until one workflow happens to pass. A failed attempt must produce a typed issue and an auditable next action. The optional experience pool stores verified repair policies—not task answers—and promotes a policy only after whole-workflow success.
+It does not repeatedly sample new workflows until one happens to pass. A failed runtime attempt retains an auditable next action. The optional repair-memory prototype stores generic text policies rather than successful code Diffs or executable Skills; it was disabled in the reported comparison, has no held-out Warm-uplift evidence, and is not claimed as self-evolution.
 
 ## Package layout
 

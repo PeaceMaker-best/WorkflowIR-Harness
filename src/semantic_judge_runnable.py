@@ -10,6 +10,21 @@ from typing import Any, Dict, List
 from api_client import APIClient
 
 
+def file_only_semantic_result(
+    output_dict: Dict[str, Any],
+    file_names: set[str],
+) -> Dict[str, Any] | None:
+    unverified_file_fields = sorted(set(output_dict) & file_names)
+    if not unverified_file_fields:
+        return None
+    return {
+        "semantic_pass": False,
+        "semantic_verified": False,
+        "reason": "unverified_file_output",
+        "unverified_file_fields": unverified_file_fields,
+    }
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--input", required=True)
@@ -51,7 +66,11 @@ def main() -> None:
             "execution_pass": bool(item.get("resolve_proxy")),
         }
         if not item.get("resolve_proxy"):
-            result.update({"semantic_pass": False, "reason": "execution_or_output_contract_failed"})
+            result.update({
+                "semantic_pass": False,
+                "semantic_verified": False,
+                "reason": "execution_or_output_contract_failed",
+            })
             return result
         case = item["case"]
         task_name, round_text = case.rsplit("_", 1)
@@ -60,8 +79,9 @@ def main() -> None:
         output_dict = ((item.get("trace") or {}).get("detail") or {}).get("outputs") or {}
         file_names = set((file_checks.get(case) or {}).keys())
         nonfile_outputs = [[key, value] for key, value in output_dict.items() if key not in file_names]
-        if not nonfile_outputs:
-            result.update({"semantic_pass": True, "reason": "file_outputs_checked_separately"})
+        file_only_result = file_only_semantic_result(output_dict, file_names)
+        if file_only_result is not None:
+            result.update(file_only_result)
             return result
         output_text = "\n".join(f"{key}: {value}" for key, value in nonfile_outputs)
         if len(output_text) > args.max_output_chars:
@@ -89,12 +109,17 @@ def main() -> None:
             reason_match = re.search(r"<reason>(.*?)</reason>", response.text, re.I | re.S)
             result.update({
                 "semantic_pass": passed,
+                "semantic_verified": True,
                 "reason": (reason_match.group(1).strip() if reason_match else response.text[:1000]),
                 "judge_prompt_tokens": response.prompt_tokens,
                 "judge_completion_tokens": response.completion_tokens,
             })
         except Exception as exc:
-            result.update({"semantic_pass": False, "reason": f"judge_error:{type(exc).__name__}"})
+            result.update({
+                "semantic_pass": False,
+                "semantic_verified": False,
+                "reason": f"judge_error:{type(exc).__name__}",
+            })
         return result
 
     judged: List[Dict[str, Any]] = []
@@ -112,6 +137,10 @@ def main() -> None:
         summary[arm] = {
             "trials": len(arm_rows),
             "semantic_pass": sum(bool(item["semantic_pass"]) for item in arm_rows),
+            "semantic_verified": sum(bool(item.get("semantic_verified")) for item in arm_rows),
+            "unverified_file_outputs": sum(
+                item.get("reason") == "unverified_file_output" for item in arm_rows
+            ),
             "three_input_task_pass": sum(
                 len([item for item in arm_rows if item["case"] == case]) == 3
                 and all(item["semantic_pass"] for item in arm_rows if item["case"] == case)

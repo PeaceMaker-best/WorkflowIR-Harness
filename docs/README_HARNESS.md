@@ -1,10 +1,10 @@
 # Workflow execution harness
 
-This package turns generated workflow configurations into an auditable execution experiment instead of judging them by JSON equality.
+This package turns pre-generated workflow configurations into an auditable execution experiment instead of judging them by JSON equality. The current runnable path starts from frozen YAML artifacts; Workflow IR validation exists as a prototype, but natural-language-to-IR generation is not wired into a public CLI.
 
 ## Pipeline
 
-`Requirement contract -> shared Dify compatibility adapter -> import/publish -> execute -> output-contract check -> semantic judge -> typed repair -> full rerun`
+`Frozen YAML -> requirement/runtime contract patch -> shared Dify compatibility adapter -> import/publish -> execute -> output-contract check -> semantic proxy -> bounded repair -> full rerun`
 
 The core design separates:
 
@@ -33,4 +33,4 @@ See:
 
 ## Claim boundary
 
-The current evidence covers five Developer workflows and fifteen functional executions per arm. It supports a scoped engineering claim, not a full Chat2Workflow leaderboard claim.
+The frozen report covers five Developer workflows and fifteen logical trials per arm. The expanded paired report covers 16 tasks, 48 logical trials per arm, and 96 system-side logical trials in total. It supports a scoped post-hoc engineering claim over pre-generated artifacts, not a full Chat2Workflow leaderboard or an end-to-end generation claim.
